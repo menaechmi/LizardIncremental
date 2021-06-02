@@ -18,4 +18,5 @@ Download python, run <code>python -m http.server</code> in the folder of the gam
 - Lizard society
 - Science
 - Handy Dandy UI
+- Lizard colors
 - And more!
