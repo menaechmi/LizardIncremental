@@ -8,6 +8,7 @@ let lastFpsUpdate;
 let frameID;
 let running;
 let started;
+let lizards;
 
 lastFrameTimeMS = 0;
 maxFPS = 60;
@@ -19,22 +20,40 @@ lastFpsUpdate = 0;
 running = false;
 started = false;
 
+//Object to store game data
 let saves = {
-    lizards: 0,
-    cats: 1
+    cats: 1,
+    lizards: 0
+};
 
+function checkForUnlock() {
+    if (saves.Lizards > 0) {
+        unlockTab(lizards)
+    }
 }
+
+//creates a tab for the feature once it is unlocked
+function unlockTab(tab) {
+    let tabList;
+    tabList = getElementById("listOfTabs");
+    tabList.innerHTML += "<li><a href=\"\">" + tab + "</a></li>";
+}
+
+//sends cats on an expedition
 function lizardExpedition(requestNum) {
     saves.lizards += requestNum;
     disableButton();
     //blockForSeconds();
     enableButton();
 }
+
+//updates the counters on the page
 function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + saves.lizards;
     document.getElementById("cats").innerHTML = "Cats: " + saves.cats;
 
 }
+
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
 //by running disableButton(), waiting the amount of time, then running enableButton()
 function blockForSeconds(lengthOfBlock) {
@@ -48,7 +67,7 @@ function disableButton() {
     let styleSheet;
 
     styleSheet = document.styleSheets[0].cssRules[0].style;
-    styleSheet.setProperty('pointer-events', 'none');
+    styleSheet.setProperty("pointer-events", "none");
 }
 
 //Enables the button through CSS pointer-events, still requires running from an HTTP server
@@ -56,11 +75,15 @@ function enableButton() {
     let styleSheet;
 
     styleSheet = document.styleSheets[0].cssRules[0].style;
-    styleSheet.setProperty('pointer-events', 'auto');
+    styleSheet.setProperty("pointer-events", "auto");
 }
+
+//panic if the numUpdateSteps >240, resets the delta to 0
 function panic() {
     delta = 0;
 }
+
+//Pauses/stops the game, also saves before the pause
 function stop() {
     save();
     running = false;
@@ -69,6 +92,8 @@ function stop() {
     cancelAnimationFrame(frameID);
     //save
 }
+
+//starts/unpauses the game
 function start() {
     if (!started) {
         started = true;
@@ -82,13 +107,17 @@ function start() {
     }
 }
 
+//saves the data from saves to localstorage
 function save() {
     localStorage.setItem("lizardIncrementalSave",JSON.stringify(saves));
 }
+
+//loads save data from localstorage
 function load() {
     let savegame;
     saves = JSON.parse(localStorage.getItem("lizardIncrementalSave"));
 }
+
 function main(timestamp) {
     let numUpdateSteps;
 
@@ -109,12 +138,13 @@ function main(timestamp) {
     while (delta >= timestep){
         update(timestep);
         delta -= timestep;
-        if (++numUpdateSteps >= 240) {
+        if (numUpdateSteps++ >= 240) {
             panic();
             break;
         }
     }
     updateCounter();
+    checkForUnlock();
     frameID = requestAnimationFrame(main);
 }
 

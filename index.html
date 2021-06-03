@@ -3,9 +3,11 @@
     <head>
         <meta charset="utf-8" />
         <title>Lizard Incremental</title>
+        <link rel="stylesheet" href="css/uikit.min.css" />
         <link href="styleSheets/main.css" rel="styleSheet">
-        <script src="codebase/suite.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/uikit.min.js" type="module"></script>
+        <script src="js/uikit-icons.min.js"></script>
 
     </head>
 
@@ -20,6 +22,9 @@
         </header>
 
         <main>
+            <ul class="uk-tab-bottom" id="listOfTabs" uk-tab>
+                <li class="uk-active"><a href="">Expeditions</a></li>
+            </ul>
             <span id="cats"></span>
             <button type="button" onclick="lizardExpedition(1)" id="expeditionButton">Send cat on expedition</button>
             <span id="lizards"></span>
