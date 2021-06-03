@@ -9,6 +9,7 @@ let frameID;
 let running;
 let started;
 let lizards;
+let currentSave;
 
 lastFrameTimeMS = 0;
 maxFPS = 60;
@@ -21,27 +22,34 @@ running = false;
 started = false;
 
 //Object to store game data
-let saves = {
+let Saves = {
     cats: 1,
-    lizards: 0
-};
+    lizards: 0,
+    };
+let RuntimeObject = {
+    tabLizards: false
+}
 
 function checkForUnlock() {
-    if (saves.Lizards > 0) {
-        unlockTab(lizards)
+    if (!runtime.tabLizards && currentSave.lizards > 0) {
+        unlockTab("lizards");
+        console.log("I unlocked lizards");
+        runtime.tabLizards = true;
     }
+    //console.log("I did not unlock lizards");
 }
 
 //creates a tab for the feature once it is unlocked
 function unlockTab(tab) {
     let tabList;
-    tabList = getElementById("listOfTabs");
+    tabList = document.getElementById("listOfTabs");
     tabList.innerHTML += "<li><a href=\"\">" + tab + "</a></li>";
+    console.log("unlocked " + tab);
 }
 
 //sends cats on an expedition
 function lizardExpedition(requestNum) {
-    saves.lizards += requestNum;
+    currentSave.lizards += requestNum;
     disableButton();
     //blockForSeconds();
     enableButton();
@@ -49,8 +57,8 @@ function lizardExpedition(requestNum) {
 
 //updates the counters on the page
 function updateCounter() {
-    document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + saves.lizards;
-    document.getElementById("cats").innerHTML = "Cats: " + saves.cats;
+    document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + currentSave.lizards;
+    document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
 
 }
 
@@ -109,13 +117,12 @@ function start() {
 
 //saves the data from saves to localstorage
 function save() {
-    localStorage.setItem("lizardIncrementalSave",JSON.stringify(saves));
+    localStorage.setItem("lizardIncrementalSave",JSON.stringify(currentSave));
 }
 
 //loads save data from localstorage
 function load() {
-    let savegame;
-    saves = JSON.parse(localStorage.getItem("lizardIncrementalSave"));
+    Object.assign(currentSave,JSON.parse(localStorage.getItem("lizardIncrementalSave")));
 }
 
 function main(timestamp) {
@@ -134,7 +141,7 @@ function main(timestamp) {
         lastFpsUpdate = timestamp;
         framesThisSecond = 0;
     }
-
+    framesThisSecond++;
     while (delta >= timestep){
         update(timestep);
         delta -= timestep;
@@ -147,5 +154,6 @@ function main(timestamp) {
     checkForUnlock();
     frameID = requestAnimationFrame(main);
 }
-
+currentSave = Object.create(Saves);
+runtime = Object.create(RuntimeObject);
 start();

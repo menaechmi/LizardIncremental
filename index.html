@@ -22,12 +22,18 @@
         </header>
 
         <main>
-            <ul class="uk-tab-bottom" id="listOfTabs" uk-tab>
-                <li class="uk-active"><a href="">Expeditions</a></li>
+            <ul class="uk-tab-bottom .uk-position-right" id="listOfTabs" uk-tab>
+                <li class="uk-active"><a href="#expeditions-content" data-toggle="tab">Expeditions</a></li>
+
             </ul>
-            <span id="cats"></span>
-            <button type="button" onclick="lizardExpedition(1)" id="expeditionButton">Send cat on expedition</button>
-            <span id="lizards"></span>
+
+            <!--Tab Panes -->
+            <span id="cats" class=".uk-position-left .uk-position-relative"></span>
+            <br>
+            <span id="lizards" class=".uk-position-leftt .uk-position-relative"></span>
+            <ul class="uk-switcher uk-margin">
+                <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick="lizardExpedition(1)" id="expeditionButton">Send cat on expedition</button></li>
+                <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick= id="identifyLizard">Identify Lizard</button></li>
             <br>
         </main>
 
