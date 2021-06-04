@@ -20,21 +20,30 @@
                 <button type="button" onclick="load()" id="loadButton">Load</button>
             </nav>
         </header>
-
         <main>
-            <ul class="uk-tab-bottom .uk-position-right" id="listOfTabs" uk-tab>
-                <li class="uk-active"><a href="#expeditions-content" data-toggle="tab">Expeditions</a></li>
-
-            </ul>
-
-            <!--Tab Panes -->
-            <span id="cats" class=".uk-position-left .uk-position-relative"></span>
-            <br>
-            <span id="lizards" class=".uk-position-leftt .uk-position-relative"></span>
-            <ul class="uk-switcher uk-margin">
-                <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick="lizardExpedition(1)" id="expeditionButton">Send cat on expedition</button></li>
-                <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick= id="identifyLizard">Identify Lizard</button></li>
-            <br>
+                <!--Tab Panes -->
+            <div class="uk-container">
+                <div class="uk-grid-small uk-child-width-1-3 .uk-width-1-3" uk-grid>
+                    <div class="uk-panel">
+                        <section id="counters">
+                            <span id="cats" class=".uk-position-left .uk-position-relative"></span>
+                            <br>
+                            <span id="lizards" class=".uk-position-left .uk-position-relative"></span>
+                        </section>
+                    </div>
+                    <div class="uk-panel">
+                        <ul class="uk-tab-bottom" id="listOfTabs" uk-tab>
+                            <li class="uk-active"><a href="#expeditions-content" data-toggle="tab">Expeditions</a></li>
+                        </ul>
+                        <ul class="uk-switcher uk-margin">
+                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick="lizardExpedition(1)" id="expeditionButton">Send cat on expedition</button></li>
+                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick="identifyLizard(1)" id="identifyLizard">Identify Lizard</button></li>
+                        </ul>
+                    </div>
+                    <div class="uk-panel">
+                        <p>This is where something else will go</p>
+                    </div>
+                </div>
         </main>
 
         <footer>
