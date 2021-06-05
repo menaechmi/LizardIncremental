@@ -1,4 +1,5 @@
 // TODO: figure out how to modulize the code
+import * as Lizard from "./lizards.js";
 
 let lastFrameTimeMS;
 let maxFPS;
@@ -33,7 +34,10 @@ let Saves = {
     cats: 1,
     lizards: 0,
     lizardArray: [],
-    lizardMultiplier: 1
+    lizardMultiplier: 1,
+    year: 0,
+    month: 0,
+    day: 0,
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
@@ -52,9 +56,7 @@ let LizardObject = {
     trait: null,
     personality: null,
     birthdate: null,
-    speed: 0,
-    power: 0,
-    iq: 0,
+    stats: []
     };
 
 //Object for basic lizard probability
@@ -91,13 +93,32 @@ function lizardExpedition() {
     //disableButton();
     //blockForSeconds();
     for (counter = 0; counter < lizardProduct; counter++) {
-        currentLizard = Object.create(LizardObject);
-        currentLizard.name = randomName();
-        currentLizard.species = ranWeightedArray(lizardProbability);
-        currentLizard.breed = ranWeightedArray();
+        currentLizard = new Lizard();
+        currentLizard.name = Lizard.randomName();
+        currentLizard.species = Lizard.randomSpecies();
+        currentLizard.breed = Lizard.randomBreed(currentLizard.species);
+        currentLizard.sex = Lizard.ranSex();
+        currentLizard.parents[1] = Lizard.randomName();
+        currentLizard.parents[0] = Lizard.randomName();
+        currentLizard.trait = Lizard.randomTrait();
+        currentLizard.personality = Lizard.randomPersonality();
+        currentLizard.stats = Lizard.randomStats(currentLizard.species);
         currentSave.lizardArray.push();
-    //}
+    }
     //enableButton();
+}
+
+//Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
+function mulberry32(seed) {
+    return function() {
+        let t;
+
+        seed |= 0;
+        seed = seed + 0x6D2B79F5 | 0;
+        t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
 }
 
 //This function is from developer.mozilla.org's Math.random() page
@@ -123,9 +144,6 @@ function ranWeightedArray(arrayOfArrays) {    let total;
     }
 }
 
-function randomName() {
-
-}
 //updates the counters on the page
 function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + currentSave.lizards;
