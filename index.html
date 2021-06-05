@@ -5,9 +5,9 @@
         <title>Lizard Incremental</title>
         <link rel="stylesheet" href="css/uikit.min.css" />
         <link href="styleSheets/main.css" rel="styleSheet">
-        <script src="js/main.js"></script>
         <script src="js/uikit.min.js" type="module"></script>
         <script src="js/uikit-icons.min.js"></script>
+        <script type="module" src="js/main.js"></script>
 
     </head>
 
@@ -15,11 +15,13 @@
 
         <header>
 
-            <nav>
-                <button type="button" onclick="save()" id="saveButton">Save</button>
-                <button type="button" onclick="load()" id="loadButton">Load</button>
+            <nav uk-navbar>
+                <button type="button" id="saveButton">Save</button>
+                <button type="button" id="loadButton">Load</button>
+                A game by: <a href="www.github.com/menaechmi"> menaechmi</a>
             </nav>
         </header>
+
         <main>
                 <!--Tab Panes -->
             <div class="uk-container">
@@ -36,8 +38,8 @@
                             <li class="uk-active"><a href="#expeditions-content" data-toggle="tab">Expeditions</a></li>
                         </ul>
                         <ul class="uk-switcher uk-margin">
-                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick="lizardExpedition(1)" id="expeditionButton">Send cat on expedition</button></li>
-                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" onclick="identifyLizard(1)" id="identifyLizard">Identify Lizard</button></li>
+                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" id="expeditionButton">Send cat on expedition</button></li>
+                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" id="identifyLizard">Identify Lizard</button></li>
                         </ul>
                     </div>
                     <div class="uk-panel">

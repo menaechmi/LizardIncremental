@@ -1,3 +1,5 @@
+// TODO: figure out how to modulize the code
+
 let lastFrameTimeMS;
 let maxFPS;
 let delta;
@@ -10,6 +12,11 @@ let running;
 let started;
 let lizards;
 let currentSave;
+let runtime;
+let expeditionButton = document.getElementById("expeditionButton");
+let lizardButton = document.getElementById("identifyLizard");
+let saveButton = document.getElementById("saveButton");
+let loadButton = document.getElementById("loadButton");
 
 lastFrameTimeMS = 0;
 maxFPS = 60;
@@ -25,18 +32,43 @@ started = false;
 let Saves = {
     cats: 1,
     lizards: 0,
+    lizardArray: [],
+    lizardMultiplier: 1
     };
+
+//Object to store data that the game needs, but will cause problems upon save/load
 let RuntimeObject = {
     tabLizards: false
-}
+    };
 
+//Object for basic lizards
+let LizardObject = {
+    name: null,
+    color: null,
+    species: [],
+    breed: null,
+    sex: null,
+    parents: [],
+    trait: null,
+    personality: null,
+    birthdate: null,
+    speed: 0,
+    power: 0,
+    iq: 0,
+    };
+
+//Object for basic lizard probability
+
+function identifyLizard() {
+
+}
+//Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
 function checkForUnlock() {
+    //If lizards is unlocked, and you have more than 1, unlock lizards tab.
     if (!runtime.tabLizards && currentSave.lizards > 0) {
         unlockTab("lizards");
-        console.log("I unlocked lizards");
         runtime.tabLizards = true;
     }
-    //console.log("I did not unlock lizards");
 }
 
 //creates a tab for the feature once it is unlocked
@@ -48,18 +80,56 @@ function unlockTab(tab) {
 }
 
 //sends cats on an expedition
-function lizardExpedition(requestNum) {
-    currentSave.lizards += requestNum;
-    disableButton();
+function lizardExpedition() {
+    let counter;
+    let lizardProduct;
+
+    lizardProduct = 0;
+
+    lizardProduct += 1 * currentSave.lizardMultiplier;
+    currentSave.lizards += lizardProduct;
+    //disableButton();
     //blockForSeconds();
-    enableButton();
+    for (counter = 0; counter < lizardProduct; counter++) {
+        currentLizard = Object.create(LizardObject);
+        currentLizard.name = randomName();
+        currentLizard.species = ranWeightedArray(lizardProbability);
+        currentLizard.breed = ranWeightedArray();
+        currentSave.lizardArray.push();
+    //}
+    //enableButton();
 }
 
+//This function is from developer.mozilla.org's Math.random() page
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //both are inclusive
+}
+
+//Gets a random number between 1 and 100, then
+function ranWeightedArray(arrayOfArrays) {    let total;
+    let ranNum;
+
+    ranNum = getRandomInt(1, 100);
+    total = 0;
+
+    for (let i = 0; i < arrayOfArrays - 1; i++) {
+        total += arrayOfArrays[i][1];
+
+        if (total >= ranNum) {
+            return arrayOfArrays[i][0];
+        }
+    }
+}
+
+function randomName() {
+
+}
 //updates the counters on the page
 function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + currentSave.lizards;
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
-
 }
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
@@ -76,6 +146,7 @@ function disableButton() {
 
     styleSheet = document.styleSheets[0].cssRules[0].style;
     styleSheet.setProperty("pointer-events", "none");
+    //wait 5 seconds / (number of cats * ???)
 }
 
 //Enables the button through CSS pointer-events, still requires running from an HTTP server
@@ -86,74 +157,52 @@ function enableButton() {
     styleSheet.setProperty("pointer-events", "auto");
 }
 
-//panic if the numUpdateSteps >240, resets the delta to 0
-function panic() {
-    delta = 0;
-}
-
-//Pauses/stops the game, also saves before the pause
-function stop() {
-    save();
-    running = false;
-    started = false;
-
-    cancelAnimationFrame(frameID);
-    //save
-}
-
-//starts/unpauses the game
-function start() {
-    if (!started) {
-        started = true;
-        frameID = requestAnimationFrame(function (timestamp) {
-            running = true;
-            lastFrameTimeMS = timestamp;
-            lastFpsUpdate = timestamp;
-            framesThisSecond = 0;
-            frameID = requestAnimationFrame(main);
-        });
-    }
-}
-
 //saves the data from saves to localstorage
 function save() {
     localStorage.setItem("lizardIncrementalSave",JSON.stringify(currentSave));
+    console.log("Saving your game :)");
 }
 
 //loads save data from localstorage
 function load() {
     Object.assign(currentSave,JSON.parse(localStorage.getItem("lizardIncrementalSave")));
+    console.log("Loading Saved Game");
 }
 
-function main(timestamp) {
-    let numUpdateSteps;
+function main() {
+//    let numUpdateSteps
 
-    if (timestamp < lastFrameTimeMS + (1000 / maxFPS)) {
-        requestAnimationFrame(main);
-        return;
-    }
-    delta += timestamp - lastFrameTimeMS;
-    lastFrameTimeMS = timestamp;
+//    if (timestamp < lastFrameTimeMS + (1000 / maxFPS)) {
+//        requestAnimationFrame(main);
+//        return;
+//    }
+//    delta += timestamp - lastFrameTimeMS;
+//    lastFrameTimeMS = timestamp;
 
-    if (timestamp > lastFpsUpdate + 1000) {
-        fps = 0.25 * framesThisSecond + 0.75 * fps;
+//    if (timestamp > lastFpsUpdate + 1000) {
+//        fps = 0.25 * framesThisSecond + 0.75 * fps;
 
-        lastFpsUpdate = timestamp;
-        framesThisSecond = 0;
-    }
-    framesThisSecond++;
-    while (delta >= timestep){
-        update(timestep);
-        delta -= timestep;
-        if (numUpdateSteps++ >= 240) {
-            panic();
-            break;
-        }
-    }
+//        lastFpsUpdate = timestamp;
+//        framesThisSecond = 0;
+//    }
+//    framesThisSecond++;
+//    while (delta >= timestep){
+//        update(timestep);
+//        delta -= timestep;
+//        if (numUpdateSteps++ >= 240) {
+//            panic();
+//            break;
+//        }
+//    }
+
     updateCounter();
     checkForUnlock();
-    frameID = requestAnimationFrame(main);
+//    frameID = requestAnimationFrame(main);
 }
 currentSave = Object.create(Saves);
 runtime = Object.create(RuntimeObject);
-start();
+expeditionButton.addEventListener("click", lizardExpedition);
+lizardButton.addEventListener("click", identifyLizard);
+saveButton.addEventListener("click", save);
+loadButton.addEventListener("click", load);
+setInterval(main, 16.67);
