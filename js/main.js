@@ -1,5 +1,5 @@
 // TODO: figure out how to modulize the code
-import * as Lizard from "./lizards.js";
+import Lizard from "./lizards.js";
 
 let lastFrameTimeMS;
 let maxFPS;
@@ -85,7 +85,7 @@ function unlockTab(tab) {
 function lizardExpedition() {
     let counter;
     let lizardProduct;
-
+    let currentLizard;
     lizardProduct = 0;
 
     lizardProduct += 1 * currentSave.lizardMultiplier;
@@ -94,15 +94,15 @@ function lizardExpedition() {
     //blockForSeconds();
     for (counter = 0; counter < lizardProduct; counter++) {
         currentLizard = new Lizard();
-        currentLizard.name = Lizard.randomName();
-        currentLizard.species = Lizard.randomSpecies();
-        currentLizard.breed = Lizard.randomBreed(currentLizard.species);
-        currentLizard.sex = Lizard.ranSex();
-        currentLizard.parents[1] = Lizard.randomName();
-        currentLizard.parents[0] = Lizard.randomName();
-        currentLizard.trait = Lizard.randomTrait();
-        currentLizard.personality = Lizard.randomPersonality();
-        currentLizard.stats = Lizard.randomStats(currentLizard.species);
+        currentLizard.name = currentLizard.randomName();
+        currentLizard.species = currentLizard.randomSpecies();
+        currentLizard.breed = currentLizard.randomBreed(currentLizard.species);
+        currentLizard.sex = currentLizard.randomSex();
+        currentLizard.parents[1] = currentLizard.randomName();
+        currentLizard.parents[0] = currentLizard.randomName();
+        currentLizard.trait = currentLizard.randomTrait();
+        currentLizard.personality = currentLizard.randomPersonality();
+        currentLizard.stats = currentLizard.randomStats(currentLizard.species);
         currentSave.lizardArray.push();
     }
     //enableButton();
