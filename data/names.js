@@ -439,10 +439,11 @@ lastNames = [
     "Tan",
     "France",
     "the Pixie-hunter",
-    "the Fariy-hunter",
+    "the Fairy-hunter",
     "Fairysbane",
     "Wolfsbane",
-    "the Scourge of the Seven Seas"
+    "the Scourge of the Seven Seas",
+    "Silverwolf"
 ]
 
-export default firstNames, lastNames;
+export default {firstNames, lastNames};
