@@ -12,9 +12,8 @@ let Probabilities = {
         "Giant Plated Lizard": 4,
         "Legless Lizard": 2,
         "Keeled Lizard": 1,
-        "Frilled Dragons": 1
-        "Gecko": 4,
-
+        "Frilled Dragons": 1,
+        "Gecko": 4
     },
     breeds: {
         "Blue Bellied": 15,
@@ -26,7 +25,7 @@ let Probabilities = {
         "Book-eater": 13,
         "Nocturnal": 5,
         "Crepuscular": 9,
-        "Cold", 23,
+        "Cold": 23,
         "Warm-blooded": 4,
         "Striped": 35,
         "Striated": 22,
