@@ -1,3 +1,5 @@
+// TODO: Arrange these by some sort of categroy, so that people can sort them more easily
+
 //Array to contain all first names in the game
 export let firstNames = [
     "Newton",
@@ -253,7 +255,26 @@ export let firstNames = [
     "Noel",
     "Megan",
     "Conrad",
-    "Tan"
+    "Tan",
+    "Tank",
+    "Lippy",
+    "Shadow",
+    "Sheen",
+    "Twister",
+    "Chip",
+    "Jerry",
+    "Raeghal",
+    "Savage",
+    "Athena",
+    "Zeus",
+    "Heracles",
+    "Hera",
+    "Apollo",
+    "Mack",
+    "Orpheus",
+    "Aphrodite",
+    "Prometheus",
+    "Achilles"
 ]
 
 //Array to contain all possible last names for use in game
@@ -443,7 +464,46 @@ export let lastNames = [
     "Fairysbane",
     "Wolfsbane",
     "the Scourge of the Seven Seas",
-    "Silverwolf"
+    "Silverwolf",
+    "the Tank",
+    "the Savage",
+    "the Flame-bearer",
+    "the Flame-giver",
+    "the Cursed",
+    "of the Eternal Punishment",
+    "who laid beside their beloved",
+    "the Forgotten",
+    "the Lost One",
+    "the Abandoned",
+    "the Chair-breaker",
+    "the Lazy",
+    "Lewis",
+    "the Slut",
+    "the Unethical",
+    "the Trash-eater",
+    "the World-eater",
+    "the Cold",
+    "the Warm",
+    "the Great",
+    "the Horrible",
+    "Lee",
+    "MacDonald-Berger",
+    "Party-Moore",
+    "Saap",
+    "the Dim-witted",
+    "Sharp-Payne",
+    "Button",
+    "Solace",
+    "Levine",
+    "Bardot",
+    "St. Bride",
+    "Huxley",
+    "Wixx",
+    "Dustfinger",
+    "Snakeleaf",
+    "the Uninvited",
+    "the Unloved",
+    "who can't get bread to rise"
 ]
 
 export default {firstNames, lastNames};
