@@ -21,9 +21,7 @@ class Lizard {
 
 //needs to be tested then documented
     randomBreed() {
-        //let chance;
         let breed;
-        //chance = this.getRandomInt(0, 100);
         return this.ranWeightedArray(Probabilities.breeds);
         }
 
