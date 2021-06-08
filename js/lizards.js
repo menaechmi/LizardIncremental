@@ -1,10 +1,10 @@
 import Probabilities from '../data/probabilities.js';
-import * as Names from '../data/names.js';
+import { firstNames, lastNames } from '../data/names.js';
 class Lizard {
     constructor() {
     this.name = null;
     this.color = null;
-    this.species = [];
+    this.species = null;
     this.breed = null;
     this.sex = null;
     this.parents = [];
@@ -14,27 +14,25 @@ class Lizard {
     this.stats = []
     }
 
-    randomName() {
-
-    }
-
 //returns a random species from the weighted Array in Probabilities.js
     randomSpecies() {
         return this.ranWeightedArray(Probabilities.lizardProbability);
     }
 
-    randomBreed(species) {
-
-    }
+//needs to be tested then documented
+    randomBreed() {
+        //let chance;
+        let breed;
+        //chance = this.getRandomInt(0, 100);
+        return this.ranWeightedArray(Probabilities.breeds);
+        }
 
     randomName() {
         let firstName;
         let lastName;
-        firstName = Math.floor(this.mulberry32()
-                * (Names.firstNames.length + 1));
-        lastName = Math.floor(this.mulberry32(5389) * (Names.lastNames.length + 1));
-
-
+        firstName = Math.floor(this.mulberry32() * (firstNames.length + 1));
+        lastName = Math.floor(this.mulberry32(5389) * (lastNames.length + 1)); //seed chosen randomly
+        return firstName + " " + lastName;
     }
 
     randomTrait() {
@@ -85,7 +83,7 @@ class Lizard {
 
         ranNum = this.getRandomInt(1, arrayOfArrays.length);
         total = 0;
-
+// TODO: make sure this is actually working
         for (i = 0; i < arrayOfArrays.length; i++) {
             total += arrayOfArrays[i][1];
 
