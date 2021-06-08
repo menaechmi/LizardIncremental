@@ -21,10 +21,10 @@ class Lizard {
 
 //needs to be tested then documented
     randomBreed() {
-        let breed;
         return this.ranWeightedArray(Probabilities.breeds);
         }
 
+//returns a random first and last name as "First Last"
     randomName() {
         let firstName;
         let lastName;
@@ -32,6 +32,7 @@ class Lizard {
         lastName = Math.floor(this.mulberry32(5389) * (lastNames.length + 1)); //seed chosen randomly
         return firstName + " " + lastName;
     }
+
 
     randomTrait() {
 
