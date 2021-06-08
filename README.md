@@ -1,5 +1,5 @@
 # LizardIncremental
-An incremental game based on Lizards
+A Javascript incremental game based on Lizards
 
 ## To Install
 Download python, run <code>python -m http.server</code> in the folder of the game.
