@@ -108,42 +108,6 @@ function lizardExpedition() {
     //enableButton();
 }
 
-//Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
-function mulberry32(seed) {
-    return function() {
-        let t;
-
-        seed |= 0;
-        seed = seed + 0x6D2B79F5 | 0;
-        t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    }
-}
-
-//This function is from developer.mozilla.org's Math.random() page
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min); //both are inclusive
-}
-
-//Gets a random number between 1 and 100, then
-function ranWeightedArray(arrayOfArrays) {    let total;
-    let ranNum;
-
-    ranNum = getRandomInt(1, 100);
-    total = 0;
-
-    for (let i = 0; i < arrayOfArrays - 1; i++) {
-        total += arrayOfArrays[i][1];
-
-        if (total >= ranNum) {
-            return arrayOfArrays[i][0];
-        }
-    }
-}
-
 //updates the counters on the page
 function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + currentSave.lizards;
