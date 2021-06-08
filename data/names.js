@@ -1,5 +1,5 @@
 //Array to contain all first names in the game
-firstNames = [
+let firstNames = [
     "Newton",
     "Freddie",
     "Elyza",
@@ -257,7 +257,7 @@ firstNames = [
 ]
 
 //Array to contain all possible last names for use in game
-lastNames = [
+let lastNames = [
     "Schaal",
     "Wright",
     "Granich",
