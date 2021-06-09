@@ -81,6 +81,11 @@ let Probabilities = {
         ["Quick", 1],
         ["Slow", 1],
     ],
+    sex: [
+        ["Male", 45],
+        ["Female", 50],
+        ["Intersex", 5]
+    ],
     getSpeed: function(species) {
         switch (species) {
             case "Anole":
