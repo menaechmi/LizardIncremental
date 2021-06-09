@@ -54,7 +54,7 @@ let LizardObject = {
     sex: null,
     parents: [],
     trait: null,
-    personality: null,
+    personality: [],
     birthdate: null,
     stats: []
     };
@@ -96,13 +96,12 @@ function lizardExpedition() {
         currentLizard = new Lizard();
         currentLizard.name = currentLizard.randomName();
         currentLizard.species = currentLizard.randomSpecies();
-        currentLizard.breed = currentLizard.randomBreed(currentLizard.species);
+        currentLizard.breed = currentLizard.randomBreed();
         currentLizard.sex = currentLizard.randomSex();
         currentLizard.parents[1] = currentLizard.randomName();
         currentLizard.parents[0] = currentLizard.randomName();
         currentLizard.trait = currentLizard.randomTrait();
         currentLizard.personality = currentLizard.randomPersonality();
-        currentLizard.stats = currentLizard.randomStats(currentLizard.species);
         currentSave.lizardArray.push();
     }
     //enableButton();

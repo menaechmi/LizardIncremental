@@ -33,9 +33,8 @@ class Lizard {
         return firstName + " " + lastName;
     }
 
-
     randomTrait() {
-
+        return this.ranWeightedArray(Probabilities.traits);
     }
 
     randomPersonality() {
@@ -43,12 +42,97 @@ class Lizard {
     }
 
     randomStats(species) {
+        let stats;
+        let speedMinMax;
+        let strengthMinMax;
+        let iqMinMax;
+
+        stats = {
+            speed: 0,
+            stength: 0,
+            iq: 0
+        };
+        switch (this.trait) {
+            case "Skittish":
+                stats.speed += 2;
+                stats.strength -= 1;
+                stats.iq -= 1;
+            case "Introverted":
+                stats.iq += 1;
+            case "Extraverted":
+                stats.strength += 1;
+            case "Joyful":
+                stats.iq += 1;
+                stats.strength += 1;
+                stats.speed += 1;
+            case "Playful":
+                stats.iq += 1;
+                stats.strength += 1;
+                stats.speed += 1;
+            case "Religious":
+                stats.iq += 3;
+                stats.strength -= 1;
+                stats.speed -= 1;
+            case "Hungry":
+                stats.iq -= 1;
+                stats.strength -= 1;
+                stats.speed -= 1;
+            case "Demure":
+                stats.iq += 1;
+                stats.strength -= 1;
+            case "Loud":
+                stats.speed -= 2;
+                stats.strength += 2;
+            case "Angry":
+                stats.strength += 2;
+                stats.iq -= 1;
+                stats.speed -= 1;
+            case "Relaxed":
+                stats.iq += 1;
+                stats. speed -= 1;
+            case "Anxious":
+                stats.speed += 2;
+                stats.iq -= 1;
+            case "Excited":
+                stats.iq -= 1;
+                stats.strength += 1;
+                stats.speed += 1;
+            case "Calm":
+                stats.iq += 2;
+                stats.speed += 1;
+            case "Ashamed":
+                stats.iq -= 1;
+                stats.strength -= 1;
+            case "Curious":
+                stats.iq += 2;
+                stats.speed += 1;
+            case "Strong":
+                stats.strength += 4;
+            case "Weak":
+                stats.strength -= 4;
+            case "Stupid":
+                stats.iq -= 4;
+            case "Smart":
+                stats.iq += 4;
+            case "Loving":
+                stats.iq += 2;
+                stats.strenth -= 2;
+            case "Quick":
+                stats.speed += 4;
+            case "Slow":
+                stats.speed += 4;
+
+            speedMinMax = Probabilities.getSpeed(species);
+            strengthMinMax = Probabilites.getStrength(species);
+            iqMinMax = Probabilites.getIq(species);
+        }
 
     }
 
-    randomSex(){
+    randomSex() {
 
     }
+
 //Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
     mulberry32(seed = 0) {
         return function() {
@@ -69,7 +153,7 @@ class Lizard {
         min = Math.ceil(min);
         max = Math.floor(max);
         seed = Math.floor(Math.random() * (max - min + 1) + min); //both are inclusive
-        return Math.floor(this.mulberry32(seed) * max + min);
+        return Math.floor(this.mulberry32(seed) * (max - min + 1) + min);
     }
 
 //Gets a random number between 1 and the length of the array of arrays using the getRandomInt function
@@ -80,7 +164,12 @@ class Lizard {
         let ranNum;
         let i;
 
-        ranNum = this.getRandomInt(1, arrayOfArrays.length);
+        total = 0;
+        for (i = 0; i < arrayOfArrays.length; i++) {
+            total += arrayOfArrays[i][1];
+        }
+
+        ranNum = this.getRandomInt(1, total);
         total = 0;
 // TODO: make sure this is actually working
         for (i = 0; i < arrayOfArrays.length; i++) {
