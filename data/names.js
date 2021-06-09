@@ -503,7 +503,16 @@ export let lastNames = [
     "Snakeleaf",
     "the Uninvited",
     "the Unloved",
-    "who can't get bread to rise"
+    "who can't get bread to rise",
+    "who once rode an airplane",
+    "the Original",
+    "the First",
+    "the Thirteenth",
+    "the Thick",
+    "the Thin",
+    "the Communist",
+    "the Socialist",
+    "the Capitalist"
 ]
 
 export default {firstNames, lastNames};
