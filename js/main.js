@@ -45,20 +45,6 @@ let RuntimeObject = {
     tabLizards: false
     };
 
-//Object for basic lizards
-let LizardObject = {
-    name: null,
-    color: null,
-    species: [],
-    breed: null,
-    sex: null,
-    parents: [],
-    trait: null,
-    personality: [],
-    birthdate: null,
-    stats: []
-    };
-
 //Object for basic lizard probability
 
 function identifyLizard() {
@@ -102,6 +88,7 @@ function lizardExpedition() {
         currentLizard.parents[0] = currentLizard.randomName();
         currentLizard.trait = currentLizard.randomTrait();
         currentLizard.personality = currentLizard.randomPersonality();
+        currentLizard.stats = currentLizard.randomStats(currentLizard.species)
         currentSave.lizardArray.push();
     }
     //enableButton();

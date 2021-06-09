@@ -9,7 +9,7 @@ class Lizard {
     this.sex = null;
     this.parents = [];
     this.trait = null;
-    this.personality = null;
+    this.personality = {};
     this.birthdate = null;
     this.stats = []
     }
@@ -33,14 +33,80 @@ class Lizard {
         return firstName + " " + lastName;
     }
 
+//returns a random trait from probabilies.js (all are weighted the same)
     randomTrait() {
         return this.ranWeightedArray(Probabilities.traits);
     }
 
+//Personality traits are from https://www.ashami.com/rpg/
+//This function returns an object that contains keys of the personality trait,
+//with a value of how much they are that personality
     randomPersonality() {
+        let optimistPessimist;
+        let conscientiousUnscrupulous;
+        let controlledSpontaneous;
+        let intrepidCautious;
+        let agreeableDisagreeable;
+        let engagingReserved;
+        let conventionalHeterodox
+        let personalityObject = {};
 
+        optimistPessimist = this.getRandomInt(-1, 1);
+        conscientiousUnscrupulous = this.getRandomInt(-1, 1);
+        controlledSpontaneous = this.getRandomInt(-1, 1);
+        intrepidCautious = this.getRandomInt(-1, 1);
+        agreeableDisagreeable = this.getRandomInt(-1, 1);
+        engagingReserved = this.getRandomInt(-1, 1);
+        conventionalHeterodox = this.getRandomInt(-1, 1);
+
+        if (optimistPessimist <= 0) {
+            personalityObject["Optimist"] = Math.abs(optimistPessimist.toFixed(2) * 100);
+        } else if (optimistPessimist > 0) {
+            personalityObject["Pessimist"] = Math.abs(optimistPessimist.toFixed(2) * 100);
+        }
+
+        if (conscientiousUnscrupulous <= 0) {
+            personalityObject["Conscientious"] =
+            Math.abs(conscientiousUnscrupulous.toFixed(2) * 100);
+        } else if (conscientiousUnscrupulous > 0) {
+            personalityObject["Unscrupulous"] =
+            Math.abs(conscientiousUnscrupulous.toFixed(2) * 100);
+        }
+
+        if (intrepidCautious <= 0) {
+            personalityObject["Intrepid"] =
+            Math.abs(intrepidCautious.toFixed(2) * 100);
+        } else if (intrepidCautious > 0) {
+            personalityObject["Cautious"] =
+            Math.abs(intrepidCautious.toFixed(2) * 100);
+        }
+
+        if (agreeableDisagreeable <= 0) {
+            personalityObject["Agreeable"] =
+            Math.abs(agreeableDisagreeable.toFixed(2) * 100);
+        } else if (intrepidCautious > 0) {
+            personalityObject["Disagreeable"] =
+            Math.abs(agreeableDisagreeable.toFixed(2) * 100);
+        }
+
+        if (engagingReserved <= 0) {
+            personalityObject["Engaging"] =
+            Math.abs(engagingReserved.toFixed(2) * 100);
+        } else if (engagingReserved > 0) {
+            personalityObject["Reserved"] =
+            Math.abs(engagingReserved.toFixed(2) * 100);
+        }
+
+        if (conventionalHeterodox <= 0) {
+            personalityObject["Conventional"] =
+            Math.abs(conventionalHeterodox.toFixed(2) * 100);
+        } else if (conventionalHeterodox > 0) {
+            personalityObject["Heterodox"] =
+            Math.abs(conventionalHeterodox.toFixed(2) * 100);
+        }
+        return personalityObject;
     }
-
+//returns a random statblock based on species and trait
     randomStats(species) {
         let stats;
         let speedMinMax;
