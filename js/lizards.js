@@ -197,7 +197,7 @@ class Lizard {
 
 //returns a random sex for the lizard
     randomSex() {
-        return getRandomInt(Probabilites.sex);
+        return ranWeightedArray(Probabilites.sex);
     }
 
 //Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
