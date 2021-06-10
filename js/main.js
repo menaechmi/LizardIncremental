@@ -68,7 +68,6 @@ function identifyLizard() {
     let nextLizard;
 
     nextLizard = findUnidentifiedLizard();
-
     if (nextLizard === "No lizards to identify") {
         alert(nextLizard);
     } else {
@@ -86,14 +85,13 @@ function findUnidentifiedLizard() {
     for (i = 0; i < currentSave.lizardArray.length; i++) {
         if (!currentSave.lizardArray[i].identified) {
             return currentSave.lizardArray[i];
-        } else {
-            return "No lizards to identify";
+            }
         }
+        return "No lizards to identify";
     }
-}
 
 function displayLizard() {
-    
+
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
