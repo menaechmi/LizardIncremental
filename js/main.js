@@ -65,8 +65,35 @@ let RuntimeObject = {
 //Function that runs when "Identify Lizard" is clicked.
 //By default only reveals Name, Species (has a chance to fail),
 function identifyLizard() {
-    console.log(currentSave.lizardArray);
-    document.getElementById("currentLizard").innerHTML = JSON.stringify(currentSave);
+    let nextLizard;
+
+    nextLizard = findUnidentifiedLizard();
+
+    if (nextLizard === "No lizards to identify") {
+        alert(nextLizard);
+    } else {
+    nextLizard.identified = true;
+    console.log(nextLizard);
+
+    displayLizard();
+    }
+}
+
+//Function to search lizardArray for the next unidentified lizard
+function findUnidentifiedLizard() {
+    let i;
+
+    for (i = 0; i < currentSave.lizardArray.length; i++) {
+        if (!currentSave.lizardArray[i].identified) {
+            return currentSave.lizardArray[i];
+        } else {
+            return "No lizards to identify";
+        }
+    }
+}
+
+function displayLizard() {
+    
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
@@ -107,7 +134,9 @@ function lizardExpedition() {
         currentLizard.parents[0] = currentLizard.randomName();
         currentLizard.trait = currentLizard.randomTrait();
         currentLizard.personality = currentLizard.randomPersonality();
-        currentLizard.stats = currentLizard.randomStats(currentLizard.species)
+        currentLizard.stats = currentLizard.randomStats(currentLizard.species);
+        currentLizard.color = currentLizard.randomColor();
+        currentLizard.identified = false;
         currentSave.lizardArray.push(currentLizard);
     }
     //enableButton();
