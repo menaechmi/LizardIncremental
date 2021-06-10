@@ -32,28 +32,47 @@ started = false;
 //Object to store game data
 let Saves = {
     cats: 1,
-    lizards: 0,
+    lizards: {
+    "Unidentified Lizards": 0,
+    "Skinks": 0,
+    "Anole": 0,
+    "Grass Lizards": 0,
+    "Brown Basilisk": 0,
+    "Rainbow Rock Lizard": 0,
+    "Iguana": 0,
+    "Bearded Dragon": 0,
+    "Uromastyx": 0,
+    "Chameleon": 0,
+    "Giant Plated Lizard": 0,
+    "Legless Lizard": 0,
+    "Keeled Lizard": 0,
+    "Frilled Dragons": 0,
+    "Gecko": 0
+    },
     lizardArray: [],
     lizardMultiplier: 1,
     year: 0,
     month: 0,
     day: 0,
+    chances: {}
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
 let RuntimeObject = {
-    tabLizards: false
+    tabLizards: false,
+    tabZoo: false
     };
 
-//Object for basic lizard probability
-
+//Function that runs when "Identify Lizard" is clicked.
+//By default only reveals Name, Species (has a chance to fail),
 function identifyLizard() {
-
+    console.log(currentSave.lizardArray);
+    document.getElementById("currentLizard").innerHTML = currentSave.lizardArray;
 }
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
 function checkForUnlock() {
     //If lizards is unlocked, and you have more than 1, unlock lizards tab.
-    if (!runtime.tabLizards && currentSave.lizards > 0) {
+    if (!runtime.tabLizards && currentSave.lizards["Unidentified Lizards"] > 0) {
         unlockTab("lizards");
         runtime.tabLizards = true;
     }
@@ -74,8 +93,8 @@ function lizardExpedition() {
     let currentLizard;
     lizardProduct = 0;
 
-    lizardProduct += 1 * currentSave.lizardMultiplier;
-    currentSave.lizards += lizardProduct;
+    lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats;
+    currentSave.lizards["Unidentified Lizards"] += lizardProduct;
     //disableButton();
     //blockForSeconds();
     for (counter = 0; counter < lizardProduct; counter++) {
@@ -89,15 +108,17 @@ function lizardExpedition() {
         currentLizard.trait = currentLizard.randomTrait();
         currentLizard.personality = currentLizard.randomPersonality();
         currentLizard.stats = currentLizard.randomStats(currentLizard.species)
-        currentSave.lizardArray.push();
+        currentSave.lizardArray.push(currentLizard);
     }
     //enableButton();
 }
 
 //updates the counters on the page
 function updateCounter() {
-    document.getElementById("lizards").innerHTML = "Unidentifed Lizards: " + currentSave.lizards;
+    document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
+        + currentSave.lizards["Unidentified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
+
 }
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
@@ -174,3 +195,4 @@ lizardButton.addEventListener("click", identifyLizard);
 saveButton.addEventListener("click", save);
 loadButton.addEventListener("click", load);
 setInterval(main, 16.67);
+//setInterval(Calendar.increaseTime, 1000);
