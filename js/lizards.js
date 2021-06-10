@@ -1,5 +1,5 @@
 import Probabilities from '../data/probabilities.js';
-import { firstNames, lastNames } from '../data/names.js';
+import {firstNames, lastNames} from '../data/names.js';
 class Lizard {
     constructor() {
     this.name = null;
@@ -28,8 +28,11 @@ class Lizard {
     randomName() {
         let firstName;
         let lastName;
-        firstName = Math.floor(this.mulberry32() * (firstNames.length + 1));
-        lastName = Math.floor(this.mulberry32(5389) * (lastNames.length + 1)); //seed chosen randomly
+
+        firstName = this.getRandomInt(0, firstNames.length);
+        lastName = this.getRandomInt(0, lastNames.length); //seed chosen randomly
+        firstName = firstNames[firstName];
+        lastName = lastNames[lastName];
         return firstName + " " + lastName;
     }
 
@@ -60,9 +63,11 @@ class Lizard {
         conventionalHeterodox = this.getRandomInt(-1, 1);
 
         if (optimistPessimist <= 0) {
-            personalityObject["Optimist"] = Math.abs(optimistPessimist.toFixed(2) * 100);
+            personalityObject["Optimist"] =
+            Math.abs(optimistPessimist.toFixed(2) * 100);
         } else if (optimistPessimist > 0) {
-            personalityObject["Pessimist"] = Math.abs(optimistPessimist.toFixed(2) * 100);
+            personalityObject["Pessimist"] =
+            Math.abs(optimistPessimist.toFixed(2) * 100);
         }
 
         if (conscientiousUnscrupulous <= 0) {
@@ -115,85 +120,111 @@ class Lizard {
 
         stats = {
             speed: 0,
-            stength: 0,
+            strength: 0,
             iq: 0
         };
+        console.log(stats.speed);
         switch (this.trait) {
             case "Skittish":
                 stats.speed += 2;
                 stats.strength -= 1;
                 stats.iq -= 1;
+                break;
             case "Introverted":
                 stats.iq += 1;
+                break;
             case "Extraverted":
                 stats.strength += 1;
+                break;
             case "Joyful":
                 stats.iq += 1;
                 stats.strength += 1;
                 stats.speed += 1;
+                break;
             case "Playful":
                 stats.iq += 1;
                 stats.strength += 1;
                 stats.speed += 1;
+                break;
             case "Religious":
                 stats.iq += 3;
                 stats.strength -= 1;
                 stats.speed -= 1;
+                break;
             case "Hungry":
                 stats.iq -= 1;
                 stats.strength -= 1;
                 stats.speed -= 1;
+                break;
             case "Demure":
                 stats.iq += 1;
                 stats.strength -= 1;
             case "Loud":
                 stats.speed -= 2;
                 stats.strength += 2;
+                break;
             case "Angry":
                 stats.strength += 2;
                 stats.iq -= 1;
                 stats.speed -= 1;
+                break;
             case "Relaxed":
                 stats.iq += 1;
                 stats. speed -= 1;
+                break;
             case "Anxious":
                 stats.speed += 2;
                 stats.iq -= 1;
+                break;
             case "Excited":
                 stats.iq -= 1;
                 stats.strength += 1;
                 stats.speed += 1;
+                break;
             case "Calm":
                 stats.iq += 2;
                 stats.speed += 1;
+                break;
             case "Ashamed":
                 stats.iq -= 1;
                 stats.strength -= 1;
+                break;
             case "Curious":
                 stats.iq += 2;
                 stats.speed += 1;
+                break;
             case "Strong":
-                stats.strength += 4;
+                stats.strength += 4
+                break;
             case "Weak":
                 stats.strength -= 4;
+                break;
             case "Stupid":
                 stats.iq -= 4;
+                break;
             case "Smart":
                 stats.iq += 4;
+                break;
             case "Loving":
                 stats.iq += 2;
-                stats.strenth -= 2;
+                stats.strength -= 2;
+                break;
             case "Quick":
                 stats.speed += 4;
+                break;
             case "Slow":
                 stats.speed += 4;
-
+                break;
+            }
             speedMinMax = Probabilities.getSpeed(species);
-            strengthMinMax = Probabilites.getStrength(species);
-            iqMinMax = Probabilites.getIq(species);
+            strengthMinMax = Probabilities.getStrength(species);
+            iqMinMax = Probabilities.getIq(species);
+            stats.speed += this.getRandomInt(speedMinMax[0], speedMinMax[1]);
+            stats.strength += this.getRandomInt(strengthMinMax[0], strengthMinMax[1]);
+            stats.iq += this.getRandomInt(iqMinMax[0], iqMinMax[1]);
+            return stats;
         }
 
-    }
 
 //returns a random sex for the lizard
     randomSex() {
@@ -201,15 +232,13 @@ class Lizard {
     }
 
 //Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
-    mulberry32(seed = 0) {
-        return function() {
+    mulberry32(seed) {
             let t;
 
             seed = seed + 0x6D2B79F5 | 0;
             t = Math.imul(seed ^ seed >>> 15, 1 | seed);
             t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
             return ((t ^ t >>> 14) >>> 0) / 4294967296;
-        }
     }
 
 //the core of this function is from developer.mozilla.org's Math.random() page,
