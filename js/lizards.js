@@ -11,7 +11,8 @@ class Lizard {
     this.trait = null;
     this.personality = {};
     this.birthdate = null;
-    this.stats = []
+    this.stats = [];
+    this.identified = false;
     }
 
 //returns a random species from the weighted Array in Probabilities.js
@@ -229,6 +230,18 @@ class Lizard {
 //returns a random sex for the lizard
     randomSex() {
         return this.ranWeightedArray(Probabilities.sex);
+    }
+
+//returns an rgb value for the color of the lizard.
+    randomColor() {
+        let red;
+        let green;
+        let blue;
+
+        red = this.getRandomInt(0, 255);
+        green = this.getRandomInt(0, 255);
+        blue = this.getRandomInt(0, 255);
+        return red + ", " + green + ", " + blue;
     }
 
 //Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
