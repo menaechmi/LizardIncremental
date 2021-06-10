@@ -1,4 +1,3 @@
-// TODO: figure out how to modulize the code
 import Lizard from "./lizards.js";
 
 let lastFrameTimeMS;
@@ -67,8 +66,9 @@ let RuntimeObject = {
 //By default only reveals Name, Species (has a chance to fail),
 function identifyLizard() {
     console.log(currentSave.lizardArray);
-    document.getElementById("currentLizard").innerHTML = currentSave.lizardArray;
+    document.getElementById("currentLizard").innerHTML = JSON.stringify(currentSave);
 }
+
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
 function checkForUnlock() {
     //If lizards is unlocked, and you have more than 1, unlock lizards tab.

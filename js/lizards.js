@@ -54,60 +54,60 @@ class Lizard {
         let conventionalHeterodox
         let personalityObject = {};
 
-        optimistPessimist = this.getRandomInt(-1, 1);
-        conscientiousUnscrupulous = this.getRandomInt(-1, 1);
-        controlledSpontaneous = this.getRandomInt(-1, 1);
-        intrepidCautious = this.getRandomInt(-1, 1);
-        agreeableDisagreeable = this.getRandomInt(-1, 1);
-        engagingReserved = this.getRandomInt(-1, 1);
-        conventionalHeterodox = this.getRandomInt(-1, 1);
+        optimistPessimist = this.getRandomInt(0, 100);
+        conscientiousUnscrupulous = this.getRandomInt(0, 100);
+        controlledSpontaneous = this.getRandomInt(0, 100);
+        intrepidCautious = this.getRandomInt(0, 100);
+        agreeableDisagreeable = this.getRandomInt(0, 100);
+        engagingReserved = this.getRandomInt(0, 100);
+        conventionalHeterodox = this.getRandomInt(0, 100);
 
-        if (optimistPessimist <= 0) {
+        if (optimistPessimist >= 50) {
             personalityObject["Optimist"] =
-            Math.abs(optimistPessimist.toFixed(2) * 100);
-        } else if (optimistPessimist > 0) {
+            Math.abs(optimistPessimist - 50);
+        } else if (optimistPessimist < 50) {
             personalityObject["Pessimist"] =
-            Math.abs(optimistPessimist.toFixed(2) * 100);
+            Math.abs(optimistPessimist - 50);
         }
 
-        if (conscientiousUnscrupulous <= 0) {
+        if (conscientiousUnscrupulous >= 50) {
             personalityObject["Conscientious"] =
-            Math.abs(conscientiousUnscrupulous.toFixed(2) * 100);
-        } else if (conscientiousUnscrupulous > 0) {
+            Math.abs(conscientiousUnscrupulous - 50);
+        } else if (conscientiousUnscrupulous < 50) {
             personalityObject["Unscrupulous"] =
-            Math.abs(conscientiousUnscrupulous.toFixed(2) * 100);
+            Math.abs(conscientiousUnscrupulous - 50);
         }
 
-        if (intrepidCautious <= 0) {
+        if (intrepidCautious >= 50) {
             personalityObject["Intrepid"] =
-            Math.abs(intrepidCautious.toFixed(2) * 100);
-        } else if (intrepidCautious > 0) {
+            Math.abs(intrepidCautious - 50);
+        } else if (intrepidCautious < 50) {
             personalityObject["Cautious"] =
-            Math.abs(intrepidCautious.toFixed(2) * 100);
+            Math.abs(intrepidCautious - 50);
         }
 
-        if (agreeableDisagreeable <= 0) {
+        if (agreeableDisagreeable >= 50) {
             personalityObject["Agreeable"] =
-            Math.abs(agreeableDisagreeable.toFixed(2) * 100);
-        } else if (intrepidCautious > 0) {
+            Math.abs(agreeableDisagreeable - 50);
+        } else if (intrepidCautious < 50) {
             personalityObject["Disagreeable"] =
-            Math.abs(agreeableDisagreeable.toFixed(2) * 100);
+            Math.abs(agreeableDisagreeable - 50);
         }
 
-        if (engagingReserved <= 0) {
+        if (engagingReserved >= 50) {
             personalityObject["Engaging"] =
-            Math.abs(engagingReserved.toFixed(2) * 100);
-        } else if (engagingReserved > 0) {
+            Math.abs(engagingReserved - 50);
+        } else if (engagingReserved < 50) {
             personalityObject["Reserved"] =
-            Math.abs(engagingReserved.toFixed(2) * 100);
+            Math.abs(engagingReserved - 50);
         }
 
-        if (conventionalHeterodox <= 0) {
+        if (conventionalHeterodox >= 50) {
             personalityObject["Conventional"] =
-            Math.abs(conventionalHeterodox.toFixed(2) * 100);
-        } else if (conventionalHeterodox > 0) {
+            Math.abs(conventionalHeterodox - 50);
+        } else if (conventionalHeterodox < 50) {
             personalityObject["Heterodox"] =
-            Math.abs(conventionalHeterodox.toFixed(2) * 100);
+            Math.abs(conventionalHeterodox - 50);
         }
         return personalityObject;
     }
@@ -123,7 +123,7 @@ class Lizard {
             strength: 0,
             iq: 0
         };
-        console.log(stats.speed);
+
         switch (this.trait) {
             case "Skittish":
                 stats.speed += 2;
