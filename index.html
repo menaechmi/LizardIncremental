@@ -43,7 +43,14 @@
                             <li>
                                 <button class="uk-button .uk-button-primary .uk-position-center" type="button" id="identifyLizard">Identify Lizard</button>
                                 <div class="uk-section">
-                                    <div class="uk-container" id="currentLizard"></div>
+                                    <div class="uk-container">
+                                        <ul class="uk-pagination">
+                                            <li><a href="#" id="nextLizard"><span uk-pagination-previous></span>Previous</a></li>
+                                            <li><a href="#" id="previousLizard"><span uk-pagination-next>Next</span></a></li>
+                                        </ul>
+                                        <div id="currentLizard">
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
