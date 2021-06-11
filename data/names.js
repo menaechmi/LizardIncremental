@@ -375,7 +375,7 @@ export let lastNames = [
     "Bee",
     "Beeeater",
     "Carlos",
-    "Better Known as \"That Bitch\"",
+    "Better Known as  \"That Bitch\"",
     "Sze",
     "Windsor",
     "King",
