@@ -29,6 +29,7 @@
                 <div class="uk-grid-small uk-child-width-1-3 .uk-width-1-3" uk-grid>
                     <div class="uk-panel">
                         <section id="counters">
+                            <span id="money" class=".uk-position-left .uk-position-relative"></span>
                             <span id="cats" class=".uk-position-left .uk-position-relative"></span>
                             <br>
                             <span id="lizards" class=".uk-position-left .uk-position-relative"></span>
@@ -39,9 +40,13 @@
                             <li class="uk-active"><a href="#expeditions-content" data-toggle="tab">Expeditions</a></li>
                         </ul>
                         <ul class="uk-switcher uk-margin">
-                            <li><button class="uk-button .uk-button-primary .uk-position-center" type="button" id="expeditionButton">Send cat on expedition</button></li>
-                            <li>
-                                <button class="uk-button .uk-button-primary .uk-position-center" type="button" id="identifyLizard">Identify Lizard</button>
+                            <!-- Buttons and stuff for the expedition Tab -->
+                            <li id="expeditionTab">
+                                <button class="uk-button uk-button-primary .uk-position-center" type="button" id="expeditionButton">Send cat on expedition</button>
+                            </li>
+                            <!-- Buttons for the lizard tab -->
+                            <li id="lizardTab">
+                                <button class="uk-button uk-button-primary .uk-position-center" type="button" id="identifyLizard">Identify Lizard</button>
                                 <div class="uk-section">
                                     <div class="uk-container">
                                         <ul class="uk-pagination">
@@ -52,6 +57,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </li>
+                            <!-- Buttons and stuff for the shop -->
+                            <li class="uk-margin">
+                                <button class="uk-button uk-button-secondary" type="button" id="sellLizard">Sell a Lizard</button>
+                                <br />
+                                <button class="uk-button uk-button-primary" type="button" id="buyCat">Buy a cat</button>
                             </li>
                         </ul>
                     </div>
