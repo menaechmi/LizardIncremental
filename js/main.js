@@ -95,13 +95,14 @@ function findUnidentifiedLizard() {
             return currentSave.lizardArray[i];
             }
         }
+        loadLizardPage();
         return "No lizards to identify";
     }
 
 //increments the lizard page and resets at index 0 if over the length of the array
 function nextLizardPage() {
-    currentPage += 1;
-    if (currentPage > lizard.Length) {
+    currentPage += 1
+    if (currentPage === currentSave.lizardArray.length) {
         currentPage = 0;
     }
     loadLizardPage();
@@ -110,8 +111,8 @@ function nextLizardPage() {
 //decrements the lizard page and resets at the end if negatives are reached
 function previousLizardPage() {
     currentPage -= 1;
-    if (currentPage < 0) {
-        currentPage = lizard.length;
+    if (currentPage <= 0) {
+        currentPage = currentSave.lizardArray.length;
     }
     loadLizardPage();
 }
@@ -120,8 +121,8 @@ function previousLizardPage() {
 function loadLizardPage() {
     let displayLizard;
 
-     displayLizard = lizardArray[currentPage];
-
+    displayLizard = currentSave.lizardArray.length;
+    lizardDisplayDiv += "<p>Name: \t" //+ currentSave.lizardArray[currentPage] +"</p>";
 }
 
 //dispalys the current lizard
