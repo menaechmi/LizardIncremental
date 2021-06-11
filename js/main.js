@@ -1,15 +1,15 @@
 import Lizard from "./lizards.js";
 
-let lastFrameTimeMS;
-let maxFPS;
-let delta;
-let timestep;
-let framesThisSecond;
-let fps;
-let lastFpsUpdate;
-let frameID;
-let running;
-let started;
+//let lastFrameTimeMS;
+//let maxFPS;
+//let delta;
+//let timestep;
+//let framesThisSecond;
+//let fps;
+//let lastFpsUpdate;
+//let frameID;
+//let running;
+//let started;
 let lizards;
 let currentSave;
 let runtime;
@@ -17,16 +17,22 @@ let expeditionButton = document.getElementById("expeditionButton");
 let lizardButton = document.getElementById("identifyLizard");
 let saveButton = document.getElementById("saveButton");
 let loadButton = document.getElementById("loadButton");
+let nextLizard = document.getElementById("nextLizard");
+let previousLizard = document.getElementById("previousLizard");
+let lizardDisplayDiv = document.getElementById("currentLizard")
+let currentPage;
 
-lastFrameTimeMS = 0;
-maxFPS = 60;
-lizards = 0;
-timestep = 1000 / 60;
-fps = 60;
-framesThisSecond = 0;
-lastFpsUpdate = 0;
-running = false;
-started = false;
+currentPage = 0;
+
+//lastFrameTimeMS = 0;
+//maxFPS = 60;
+//lizards = 0;
+//timestep = 1000 / 60;
+//fps = 60;
+//framesThisSecond = 0;
+//lastFpsUpdate = 0;
+//running = false;
+//started = false;
 
 //Object to store game data
 let Saves = {
@@ -75,6 +81,8 @@ function identifyLizard() {
     console.log(nextLizard);
 
     displayLizard();
+    currentSave.lizards["Unidentified Lizards"] -= 1;
+    currentSave.lizards[nextLizard.species] += 1;
     }
 }
 
@@ -90,8 +98,36 @@ function findUnidentifiedLizard() {
         return "No lizards to identify";
     }
 
-function displayLizard() {
+//increments the lizard page and resets at index 0 if over the length of the array
+function nextLizardPage() {
+    currentPage += 1;
+    if (currentPage > lizard.Length) {
+        currentPage = 0;
+    }
+    loadLizardPage();
+}
 
+//decrements the lizard page and resets at the end if negatives are reached
+function previousLizardPage() {
+    currentPage -= 1;
+    if (currentPage < 0) {
+        currentPage = lizard.length;
+    }
+    loadLizardPage();
+}
+
+
+function loadLizardPage() {
+    let displayLizard;
+
+     displayLizard = lizardArray[currentPage];
+
+}
+
+//dispalys the current lizard
+function displayLizard() {
+    let lizardDisplayDiv;
+    lizardDisplayDiv = document.getElementById("currentLizard");
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
@@ -145,7 +181,7 @@ function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
-
+    //document.getElementById
 }
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
@@ -175,13 +211,13 @@ function enableButton() {
 
 //saves the data from saves to localstorage
 function save() {
-    localStorage.setItem("lizardIncrementalSave",JSON.stringify(currentSave));
+    localStorage.setItem("lizardIncrementalSave", JSON.stringify(currentSave));
     console.log("Saving your game :)");
 }
 
 //loads save data from localstorage
 function load() {
-    Object.assign(currentSave,JSON.parse(localStorage.getItem("lizardIncrementalSave")));
+    Object.assign(currentSave, JSON.parse(localStorage.getItem("lizardIncrementalSave")));
     console.log("Loading Saved Game");
 }
 
@@ -215,11 +251,14 @@ function main() {
     checkForUnlock();
 //    frameID = requestAnimationFrame(main);
 }
-currentSave = Object.create(Saves);
+currentSave = new Object(Saves);
 runtime = Object.create(RuntimeObject);
+//event listners should *probably* be moved over to ui.js
 expeditionButton.addEventListener("click", lizardExpedition);
 lizardButton.addEventListener("click", identifyLizard);
 saveButton.addEventListener("click", save);
 loadButton.addEventListener("click", load);
+nextLizard.addEventListener("click", nextLizardPage);
+previousLizard.addEventListener("click", previousLizardPage);
 setInterval(main, 16.67);
 //setInterval(Calendar.increaseTime, 1000);
