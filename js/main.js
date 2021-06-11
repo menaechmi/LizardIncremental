@@ -80,7 +80,7 @@ function identifyLizard() {
     nextLizard.identified = true;
     console.log(nextLizard);
 
-    displayLizard();
+    loadLizardPage();
     currentSave.lizards["Unidentified Lizards"] -= 1;
     currentSave.lizards[nextLizard.species] += 1;
     }
@@ -92,10 +92,10 @@ function findUnidentifiedLizard() {
 
     for (i = 0; i < currentSave.lizardArray.length; i++) {
         if (!currentSave.lizardArray[i].identified) {
+            loadLizardPage();
             return currentSave.lizardArray[i];
             }
         }
-        loadLizardPage();
         return "No lizards to identify";
     }
 
@@ -117,21 +117,16 @@ function previousLizardPage() {
     loadLizardPage();
 }
 
-
+//Loads and displays the currently selected Lizard
 function loadLizardPage() {
     let displayLizard;
-    console.log(currentPage);
     displayLizard = currentSave.lizardArray[currentPage];
     console.log(displayLizard);
-    lizardDisplayDiv += "<p>Name: \t" //+ currentSave.lizardArray[currentPage].name +"</p>";
-}
-
-//displays the current lizard
-function displayLizard() {
-    let lizardDisplayDiv;
-
-    lizardDisplayDiv = document.getElementById("currentLizard");
-
+    //<p style="color: rgb(176, 216, 244)">displayLizard.name</p>
+    lizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
+    lizardDisplayDiv.innerHTML = "<p>Name: \t" + displayLizard.name;
+    lizardDisplayDiv.innerHTML += "Species: \t" + displayLizard.species;
+    lizardDisplayDiv.innerHTML += "<br />Color: \t" + displayLizard.color +"</p>";
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
@@ -200,21 +195,21 @@ function blockForSeconds(lengthOfBlock) {
 }
 
 //Disables usage of the "Send cat on expedition" button, requires running from an HTTP Server
-function disableButton() {
-    let styleSheet;
-
-    styleSheet = document.styleSheets[0].cssRules[0].style;
-    styleSheet.setProperty("pointer-events", "none");
-    //wait 5 seconds / (number of cats * ???)
-}
+//function disableButton() {
+//    let styleSheet;
+//
+//    styleSheet = document.styleSheets[0].cssRules[0].style;
+//    styleSheet.setProperty("pointer-events", "none");
+        //wait 5 seconds / (number of cats * ???)
+//}
 
 //Enables the button through CSS pointer-events, still requires running from an HTTP server
-function enableButton() {
-    let styleSheet;
-
-    styleSheet = document.styleSheets[0].cssRules[0].style;
-    styleSheet.setProperty("pointer-events", "auto");
-}
+//function enableButton() {
+//    let styleSheet;
+//
+//    styleSheet = document.styleSheets[0].cssRules[0].style;
+//    styleSheet.setProperty("pointer-events", "auto");
+//}
 
 //saves the data from saves to localstorage
 function save() {
