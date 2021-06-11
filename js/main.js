@@ -81,10 +81,8 @@ function identifyLizard() {
     nextLizard.identified = true;
     console.log(nextLizard);
 
+
     loadLizardPage();
-    //increment the currentPage variable so that when you identify your next lizard,
-    //its automatically displayed
-    currentPage += 1;
     currentSave.lizards["Unidentified Lizards"] -= 1;
     currentSave.lizards[nextLizard.species] += 1;
     }
@@ -125,6 +123,12 @@ function previousLizardPage() {
 function loadLizardPage() {
     let displayLizard;
     displayLizard = currentSave.lizardArray[currentPage];
+
+    //fixes bug where you could previously see an unidentified lizard
+    if (!displayLizard.identified) {
+        return;
+    }
+
     console.log(displayLizard);
     //<p style="color: rgb(176, 216, 244)">displayLizard.name</p>
     lizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
