@@ -248,7 +248,6 @@ export let firstNames = [
     "Wolfie",
     "Edmonton",
     "Hank",
-    "Penis",
     "No-name",
     "Duckie",
     "Ducky",
