@@ -121,7 +121,8 @@ function previousLizardPage() {
 function loadLizardPage() {
     let displayLizard;
 
-    displayLizard = currentSave.lizardArray.length;
+    displayLizard = currentSave.lizardArray[currentPage];
+    console.log(displayLizard + "display lizard");
     lizardDisplayDiv += "<p>Name: \t" //+ currentSave.lizardArray[currentPage] +"</p>";
 }
 
