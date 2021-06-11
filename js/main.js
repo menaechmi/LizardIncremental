@@ -59,7 +59,8 @@ let Saves = {
     year: 0,
     month: 0,
     day: 0,
-    chances: {}
+    chances: {},
+    advancedIdentify: false
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
@@ -81,6 +82,9 @@ function identifyLizard() {
     console.log(nextLizard);
 
     loadLizardPage();
+    //increment the currentPage variable so that when you identify your next lizard,
+    //its automatically displayed
+    currentPage += 1;
     currentSave.lizards["Unidentified Lizards"] -= 1;
     currentSave.lizards[nextLizard.species] += 1;
     }
@@ -126,7 +130,14 @@ function loadLizardPage() {
     lizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
     lizardDisplayDiv.innerHTML = "<p>Name: \t" + displayLizard.name;
     lizardDisplayDiv.innerHTML += "Species: \t" + displayLizard.species;
-    lizardDisplayDiv.innerHTML += "<br />Color: \t" + displayLizard.color +"</p>";
+    lizardDisplayDiv.innerHTML += "<br />Color: \t" + displayLizard.color;
+    lizardDisplayDiv.innerHTML += "<br/ >Sex: \t" + displayLizard.sex + "</p>";
+    if (currentSave.advancedIdentify) {
+        lizardDisplayDiv.innerHTML += "<p>Breed: \t" + displayLizard.breed;
+        lizardDisplayDiv.innerHTML += "<br />Birthday: \t" + displayLizard.birthday;
+        lizardDisplayDiv.innerHTML += "<br />Trait: \t" + displayLizard.trait;
+        lizardDisplayDiv.innerHTML += "<br />Stats: \t" + displayLizard.stats; //TODO: determine how to actually show stats
+    }
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
