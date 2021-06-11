@@ -1,5 +1,5 @@
 import Lizard from "./lizards.js";
-
+import Shop from "./shop.js";
 //let lastFrameTimeMS;
 //let maxFPS;
 //let delta;
@@ -39,6 +39,7 @@ let Saves = {
     cats: 1,
     lizards: {
     "Unidentified Lizards": 0,
+    "Identified Lizards": 0,
     "Skinks": 0,
     "Anole": 0,
     "Grass Lizards": 0,
@@ -60,12 +61,15 @@ let Saves = {
     month: 0,
     day: 0,
     chances: {},
-    advancedIdentify: false
+    advancedIdentify: false,
+    "Rewards Points": 0,
+    sssnekel: 0
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
 let RuntimeObject = {
     tabLizards: false,
+    tabShop: false,
     tabZoo: false
     };
 
@@ -84,6 +88,7 @@ function identifyLizard() {
 
     loadLizardPage();
     currentSave.lizards["Unidentified Lizards"] -= 1;
+    currentSave.lizards["Identified Lizards"] += 1;
     currentSave.lizards[nextLizard.species] += 1;
     }
 }
@@ -151,6 +156,10 @@ function checkForUnlock() {
         unlockTab("lizards");
         runtime.tabLizards = true;
     }
+    if (!runtime.tabShop && currentSave.lizards["Identified Lizards"] > 0) {
+        unlockTab("shop");
+        runtime.tabShop = true;
+    }
 }
 
 //creates a tab for the feature once it is unlocked
@@ -197,7 +206,10 @@ function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
-
+    if (currentSave.money > 0) {
+        document.getElementById("money").innerHTML = "Rewards Points: "
+        + currentSave.money
+    }
     }
 
 
