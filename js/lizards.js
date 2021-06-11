@@ -30,7 +30,7 @@ class Lizard {
         let firstName;
         let lastName;
 
-        firstName = this.getRandomInt(0, firstNames.length- 1);
+        firstName = this.getRandomInt(0, firstNames.length - 1);
         lastName = this.getRandomInt(0, lastNames.length - 1);
         firstName = firstNames[firstName];
         lastName = lastNames[lastName];
