@@ -516,7 +516,11 @@ export let lastNames = [
     "the Socialist",
     "the Capitalist",
     "Domalewski",
-    "Alabrudzińska"
+    "Alabrudzińska",
+    "Zigmund",
+    "Alex",
+    "Natalia",
+    "Natalya"
 ]
 
 export default {firstNames, lastNames};
