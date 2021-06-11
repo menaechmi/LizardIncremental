@@ -102,7 +102,7 @@ function findUnidentifiedLizard() {
 //increments the lizard page and resets at index 0 if over the length of the array
 function nextLizardPage() {
     currentPage += 1
-    if (currentPage === currentSave.lizardArray.length) {
+    if (currentPage >= currentSave.lizardArray.length) {
         currentPage = 0;
     }
     loadLizardPage();
@@ -111,8 +111,8 @@ function nextLizardPage() {
 //decrements the lizard page and resets at the end if negatives are reached
 function previousLizardPage() {
     currentPage -= 1;
-    if (currentPage <= 0) {
-        currentPage = currentSave.lizardArray.length;
+    if (currentPage < 0) {
+        currentPage = currentSave.lizardArray.length - 1;
     }
     loadLizardPage();
 }
@@ -120,16 +120,18 @@ function previousLizardPage() {
 
 function loadLizardPage() {
     let displayLizard;
-
+    console.log(currentPage);
     displayLizard = currentSave.lizardArray[currentPage];
-    console.log(displayLizard + "display lizard");
-    lizardDisplayDiv += "<p>Name: \t" //+ currentSave.lizardArray[currentPage] +"</p>";
+    console.log(displayLizard);
+    lizardDisplayDiv += "<p>Name: \t" //+ currentSave.lizardArray[currentPage].name +"</p>";
 }
 
-//dispalys the current lizard
+//displays the current lizard
 function displayLizard() {
     let lizardDisplayDiv;
+
     lizardDisplayDiv = document.getElementById("currentLizard");
+
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
@@ -180,11 +182,14 @@ function lizardExpedition() {
 
 //updates the counters on the page
 function updateCounter() {
+    let i;
+
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
-    //document.getElementById
-}
+
+    }
+
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
 //by running disableButton(), waiting the amount of time, then running enableButton()
