@@ -31,12 +31,12 @@ let Shop = {
     },
 
     getCatPrice: function(numCats, buyMultiplier) {
-        return (5 * (numCats + 5)) / buyMultiplier;
+        return (5 * (numCats)) * buyMultiplier;
     },
 
-    buyAdvancedStats: function(boughtItems) {
-        boughtItems.advancedStats = true;
-        return boughtItems;
+    getStatsPrice: function(buyMultiplier) {
+        const STATS_PRICE = 50.00;
+        return STATS_PRICE * buyMultiplier;
     },
 }
 
