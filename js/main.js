@@ -125,7 +125,7 @@ function nextLizardPage() {
 function previousLizardPage() {
     currentPage -= 1;
     if (currentPage < 0) {
-        currentPage = currentSave.lizards["Identified Lizards"];
+        currentPage = currentSave.lizards["Identified Lizards"] - 1;
     }
     loadLizardPage();
 }
@@ -135,9 +135,14 @@ function loadLizardPage() {
     let displayLizard;
 
     displayLizard = currentSave.lizardArray[currentPage];
+    if (currentSave.lizards["Identified Lizards"] == 0) {
+        lizardDisplayDiv.innerHTML = "";
+        shopLizardDisplayDiv.innerHTML = "";
+        return;
+    }
 
     //fixes bug where you could previously see an unidentified lizard
-    if (!displayLizard.identified) {
+    if (displayLizard === undefined || !displayLizard.identified) {
         return;
     }
 
@@ -184,16 +189,21 @@ function sellLizard() {
     let soldLizard;
 
     soldLizard = currentSave.lizardArray[currentPage];
+    if (soldLizard === undefined){
+        alert("You have no lizards!");
+        loadLizardPage();
+        return;
+    }
+
     if (!soldLizard.identified) {
-        alert("No identified lizards to sell");
+        alert("Please identify lizards before selling them");
         return;
     }
     currentSave.coupons += Shop.sellLizard(soldLizard, currentSave.sellMultiplier);
-    console.log(currentSave.coupons.toFixed(2));
-    currentSave.lizardArray["Identified Lizards"] -= 1;
-    currentSave.lizardArray[soldLizard] -= 1;
+    currentSave.lizards["Identified Lizards"] -= 1;
+    currentSave.lizards[soldLizard.species] -= 1;
     currentSave.lizardArray.splice(currentPage, 1);
-    loadLizardPage();
+    nextLizardPage();
 }
 
 function buyCat() {
@@ -242,9 +252,9 @@ function updateCounter() {
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
-    if (currentSave.money > 0) {
-        document.getElementById("money").innerHTML = "Store Coupons: "
-        + currentSave.money
+    if (currentSave.coupons > 0) {
+        document.getElementById("storeCoupons").innerHTML = "Store Coupons: "
+        + currentSave.coupons.toFixed(2);
     }
     }
 
