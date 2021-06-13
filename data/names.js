@@ -275,8 +275,7 @@ export let firstNames = [
     "Prometheus",
     "Achilles",
     "Piotr",
-    "Peter",
-    "ERROR: undefined"
+    "Peter"
 ]
 
 //Array to contain all possible last names for use in game
@@ -520,8 +519,7 @@ export let lastNames = [
     "Zigmund",
     "Alex",
     "Natalia",
-    "Natalya",
-    "ERROR: undefined"
+    "Natalya"
 ]
 
 export default {firstNames, lastNames};
