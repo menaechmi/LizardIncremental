@@ -19,7 +19,10 @@ let saveButton = document.getElementById("saveButton");
 let loadButton = document.getElementById("loadButton");
 let nextLizard = document.getElementById("nextLizard");
 let previousLizard = document.getElementById("previousLizard");
-let lizardDisplayDiv = document.getElementById("currentLizard")
+let lizardDisplayDiv = document.getElementById("currentLizard");
+let sellLizardButton = document.getElementById("sellLizard");
+let shopLizardDisplayDiv = document.getElementById("currentShopLizard");
+let buyCatButton = document.getElementById("buyCat");
 let currentPage;
 
 currentPage = 0;
@@ -62,8 +65,10 @@ let Saves = {
     day: 0,
     chances: {},
     advancedIdentify: false,
-    "Rewards Points": 0,
-    sssnekel: 0
+    coupons: 0,
+    sssnekel: 0,
+    sellMultiplier: 0.15,
+    buyMultiplier: 1.5
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
@@ -85,11 +90,12 @@ function identifyLizard() {
     nextLizard.identified = true;
     console.log(nextLizard);
 
-
-    loadLizardPage();
+    //change the lizard page to
     currentSave.lizards["Unidentified Lizards"] -= 1;
     currentSave.lizards["Identified Lizards"] += 1;
     currentSave.lizards[nextLizard.species] += 1;
+    currentPage = currentSave.lizards["Identified Lizards"] - 1;
+    loadLizardPage();
     }
 }
 
@@ -109,7 +115,7 @@ function findUnidentifiedLizard() {
 //increments the lizard page and resets at index 0 if over the length of the array
 function nextLizardPage() {
     currentPage += 1
-    if (currentPage >= currentSave.lizardArray.length) {
+    if (currentPage >= currentSave.lizards["Identified Lizards"]) {
         currentPage = 0;
     }
     loadLizardPage();
@@ -119,7 +125,7 @@ function nextLizardPage() {
 function previousLizardPage() {
     currentPage -= 1;
     if (currentPage < 0) {
-        currentPage = currentSave.lizardArray.length - 1;
+        currentPage = currentSave.lizards["Identified Lizards"];
     }
     loadLizardPage();
 }
@@ -127,6 +133,7 @@ function previousLizardPage() {
 //Loads and displays the currently selected Lizard
 function loadLizardPage() {
     let displayLizard;
+
     displayLizard = currentSave.lizardArray[currentPage];
 
     //fixes bug where you could previously see an unidentified lizard
@@ -134,7 +141,6 @@ function loadLizardPage() {
         return;
     }
 
-    console.log(displayLizard);
     //<p style="color: rgb(176, 216, 244)">displayLizard.name</p>
     lizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
     lizardDisplayDiv.innerHTML = "<p>Name: \t" + displayLizard.name;
@@ -147,6 +153,8 @@ function loadLizardPage() {
         lizardDisplayDiv.innerHTML += "<br />Trait: \t" + displayLizard.trait;
         lizardDisplayDiv.innerHTML += "<br />Stats: \t" + displayLizard.stats; //TODO: determine how to actually show stats
     }
+    shopLizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
+    shopLizardDisplayDiv.innerHTML = "<p>Name: " + displayLizard.name + "</p>";
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
@@ -170,6 +178,34 @@ function unlockTab(tab) {
     console.log("unlocked " + tab);
 }
 
+//function to start the sale of the currently selected lizard.
+//calls shop.js sell lizard to do the primary logic
+function sellLizard() {
+    let soldLizard;
+
+    soldLizard = currentSave.lizardArray[currentPage];
+    if (!soldLizard.identified) {
+        alert("No identified lizards to sell");
+        return;
+    }
+    currentSave.coupons += Shop.sellLizard(soldLizard, currentSave.sellMultiplier);
+    console.log(currentSave.coupons.toFixed(2));
+    currentSave.lizardArray["Identified Lizards"] -= 1;
+    currentSave.lizardArray[soldLizard] -= 1;
+    currentSave.lizardArray.splice(currentPage, 1);
+    loadLizardPage();
+}
+
+function buyCat() {
+    let catPriceDiv = document.getElementById("catPrice");
+    let catPrice;
+
+    catPrice = Shop.getCatPrice(cats, currentSave.buyMultiplier).toFixed(2);
+    console.log(catPrice);
+    currentSave.lizards.cats += 1;
+    catPriceDiv = catPrice;
+
+}
 //sends cats on an expedition
 function lizardExpedition() {
     let counter;
@@ -207,7 +243,7 @@ function updateCounter() {
         + currentSave.lizards["Unidentified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
     if (currentSave.money > 0) {
-        document.getElementById("money").innerHTML = "Rewards Points: "
+        document.getElementById("money").innerHTML = "Store Coupons: "
         + currentSave.money
     }
     }
@@ -248,6 +284,7 @@ function save() {
 function load() {
     Object.assign(currentSave, JSON.parse(localStorage.getItem("lizardIncrementalSave")));
     console.log("Loading Saved Game");
+    getCatPrice(currentSave.cats, currentSave.shopMultiplier);
 }
 
 function main() {
@@ -289,5 +326,9 @@ saveButton.addEventListener("click", save);
 loadButton.addEventListener("click", load);
 nextLizard.addEventListener("click", nextLizardPage);
 previousLizard.addEventListener("click", previousLizardPage);
+sellLizardButton.addEventListener("click", sellLizard);
+nextShopLizard.addEventListener("click", nextLizardPage);
+previousShopLizard.addEventListener("click", previousLizardPage);
+buyCatButton.addEventListener("click", buyCat);
 setInterval(main, 16.67);
 //setInterval(Calendar.increaseTime, 1000);
