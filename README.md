@@ -12,7 +12,7 @@ Download python, run <code>python -m http.server</code> in the folder of the gam
 - Handy Dandy UI
 - You can play directly in your browser
 
-## Planned features
+## Planned features (in no particular order)
 - Artwork
 - More buttons to click and more numbers to go up!
 - Features to make you spend a lot of time playing this game
@@ -26,6 +26,7 @@ Download python, run <code>python -m http.server</code> in the folder of the gam
 - Prestige system
 - Advanced genetics (lets put Mendel to shame)
 - Steam integration (eventually)
+- Automation
 - And more!
 
 ##Features that are not planned
@@ -35,4 +36,3 @@ Download python, run <code>python -m http.server</code> in the folder of the gam
 - Animations
 - Why isn't this an RPG?
 - World coming to a stop because of a global pandemic
-- 
