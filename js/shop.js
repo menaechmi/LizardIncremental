@@ -33,7 +33,10 @@ let Shop = {
     getCatPrice: function(numCats, buyMultiplier) {
         return (5 * (numCats)) * buyMultiplier;
     },
-
+    getLocalBookPrice: function(buyMultiplier) {
+        const BOOK_PRICE = 75.00;
+        return BOOK_PRICE * buyMultiplier;
+    },
     getStatsPrice: function(buyMultiplier) {
         const STATS_PRICE = 50.00;
         return STATS_PRICE * buyMultiplier;
