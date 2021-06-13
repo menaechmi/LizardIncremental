@@ -69,7 +69,7 @@ let Saves = {
     sssnekel: 0,
     sellMultiplier: 0.15,
     buyMultiplier: 1.5,
-    expeditionMultipler: 1
+    expeditionMultipler: 1,
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
@@ -227,10 +227,9 @@ function lizardExpedition() {
     let currentLizard;
     lizardProduct = 0;
 
+    blockForSeconds(5);
     lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats;
     currentSave.lizards["Unidentified Lizards"] += lizardProduct;
-    //disableButton();
-    //blockForSeconds();
     for (counter = 0; counter < lizardProduct; counter++) {
         currentLizard = new Lizard();
         currentLizard.name = currentLizard.randomName();
@@ -268,27 +267,23 @@ function updateCounter() {
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
 //by running disableButton(), waiting the amount of time, then running enableButton()
 function blockForSeconds(lengthOfBlock) {
+    let setForSeconds;
+
+    setForSeconds = (lengthOfBlock * 1000) * currentSave.expeditionMultipler;
     disableButton();
-    //wait for lengthOfBlock
-    enableButton();
+    setTimeout(enableButton, setForSeconds);
 }
 
 //Disables usage of the "Send cat on expedition" button, requires running from an HTTP Server
-//function disableButton() {
-//    let styleSheet;
-//
-//    styleSheet = document.styleSheets[0].cssRules[0].style;
-//    styleSheet.setProperty("pointer-events", "none");
-        //wait 5 seconds / (number of cats * ???)
-//}
+function disableButton() {
+    console.log("disabling");
+    expeditionButton.disabled = true;
+}
 
 //Enables the button through CSS pointer-events, still requires running from an HTTP server
-//function enableButton() {
-//    let styleSheet;
-//
-//    styleSheet = document.styleSheets[0].cssRules[0].style;
-//    styleSheet.setProperty("pointer-events", "auto");
-//}
+function enableButton() {
+    expeditionButton.removeAttribute("disabled");
+}
 
 //saves the data from saves to localstorage
 function save() {
