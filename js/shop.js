@@ -32,12 +32,7 @@ let Shop = {
 
     getCatPrice: function(numCats, buyMultiplier) {
         return (5 * (numCats + 5)) / buyMultiplier;
-    },
-
-    buyCat: function(numCats, buyMultiplier) {
-
     }
-
 }
 
 export default Shop;

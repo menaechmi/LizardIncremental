@@ -213,8 +213,8 @@ function buyCat() {
 
     catPrice = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier);
     if (currentSave.coupons > catPrice) {
-    currentSave.cats += 1;
-    currentSave.coupons -= catPrice;
+        currentSave.cats += 1;
+        currentSave.coupons -= catPrice;
     } else {
     return;
     }
@@ -254,7 +254,8 @@ function updateCounter() {
     let catPriceDiv = document.getElementById("catPrice");
 
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
-        + currentSave.lizards["Unidentified Lizards"];
+        + currentSave.lizards["Unidentified Lizards"] + "<br />Identified Lizards: "
+        + currentSave.lizards["Identified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
     if (currentSave.coupons > 0) {
         document.getElementById("storeCoupons").innerHTML = "Store Coupons: "
