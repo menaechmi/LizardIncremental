@@ -29,7 +29,7 @@
                 <div class="uk-grid-small uk-child-width-1-3 .uk-width-1-3" uk-grid>
                     <div class="uk-panel">
                         <section id="counters">
-                            <span id="money" class=".uk-position-left .uk-position-relative"></span>
+                            <span id="storeCoupons" class=".uk-position-left .uk-position-relative"></span>
                             <span id="cats" class=".uk-position-left .uk-position-relative"></span>
                             <br>
                             <span id="lizards" class=".uk-position-left .uk-position-relative"></span>
@@ -61,8 +61,12 @@
                             <!-- Buttons and stuff for the shop -->
                             <li class="uk-margin">
                                 <button class="uk-button uk-button-secondary" type="button" id="sellLizard">Sell a Lizard</button>
+                                <a href="#" id="previousShopLizard"><span uk-pagination-previous></span>Previous</a>
+                                <a href="#" id="nextShopLizard"><span uk-pagination-next>Next</span></a>
+                                <div id="currentShopLizard"></div>
                                 <br />
                                 <button class="uk-button uk-button-primary" type="button" id="buyCat">Buy a cat</button>
+                                <div id="catPrice"></div>
                             </li>
                         </ul>
                     </div>
