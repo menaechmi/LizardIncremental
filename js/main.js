@@ -204,6 +204,10 @@ function checkForUnlock() {
         statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier);
         localBookButton.addEventListener("click", buyLocalBook);
         localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier);
+        if (currentSave.boughtItems.localLizardBook) {
+            localBookButton.innerHTML = "";
+            localBookPrice.innerHTML = "";
+        }
     }
 
     if (!runtime.tabStats && currentSave.boughtItems.advancedStats) {
@@ -436,6 +440,5 @@ runtime = Object.create(RuntimeObject);
 expeditionButton.addEventListener("click", lizardExpedition);
 saveButton.addEventListener("click", save);
 loadButton.addEventListener("click", load);
-
 setInterval(main, 16.67);
 //setInterval(Calendar.increaseTime, 1000);
