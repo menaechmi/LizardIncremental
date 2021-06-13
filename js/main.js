@@ -73,6 +73,7 @@ let Saves = {
         advancedIdentify: false,
         advancedStats: false,
         localLizardBook: false,
+        identificationStations: 1,
         luck: 0
     },
     coupons: 0,
@@ -101,21 +102,26 @@ let RuntimeObject = {
 //By default only reveals Name, Species (has a chance to fail),
 function identifyLizard() {
     let nextLizard;
+    let count;
+    let i;
 
-    nextLizard = findUnidentifiedLizard();
-    if (nextLizard === "No lizards to identify") {
-        alert(nextLizard);
-    } else {
-    nextLizard.identified = true;
-    console.log(nextLizard);
+    count = currentSave.boughtItems.identificationStations;
+    for (i = 0; i < count; i++) {
+        nextLizard = findUnidentifiedLizard();
+        if (nextLizard === "No lizards to identify") {
+            alert(nextLizard);
+        } else {
+            nextLizard.identified = true;
+            //console.log(nextLizard);
 
-    //change the lizard page to
-    currentSave.lizards["Unidentified Lizards"] -= 1;
-    currentSave.lizards["Identified Lizards"] += 1;
-    currentSave.lizards[nextLizard.species] += 1;
-    currentPage = currentSave.lizards["Identified Lizards"] - 1;
-    currentSave.allTimeStats["Total Identified Lizards"] += 1;
-    loadLizardPage();
+            currentSave.lizards["Unidentified Lizards"] -= 1;
+            currentSave.lizards["Identified Lizards"] += 1;
+            currentSave.lizards[nextLizard.species] += 1;
+            //change current lizard page to the last element in the identifed lizards
+            currentPage = currentSave.lizards["Identified Lizards"] - 1;
+            currentSave.allTimeStats["Total Identified Lizards"] += 1;
+            loadLizardPage();
+        }
     }
 }
 
