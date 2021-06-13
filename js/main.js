@@ -64,13 +64,21 @@ let Saves = {
     month: 0,
     day: 0,
     chances: {},
-    advancedIdentify: false,
+    boughtItems: {
+        advancedIdentify: false,
+        advancedStats: false
+    },
     coupons: 0,
     sssnekel: 0,
     sellMultiplier: 0.15,
     buyMultiplier: 1.5,
     expeditionMultipler: 1,
-    };
+    allTimeStats: {
+        "Total Lizards Caught": 0,
+        "Total Identifed Lizards": 0,
+        "Total Sold Lizards": 0
+    }
+};
 
 //Object to store data that the game needs, but will cause problems upon save/load
 let RuntimeObject = {
@@ -169,11 +177,18 @@ function checkForUnlock() {
     if (!runtime.tabLizards && currentSave.lizards["Unidentified Lizards"] > 0) {
         unlockTab("lizards");
         runtime.tabLizards = true;
+        lizardButton.addEventListener("click", identifyLizard);
+        nextLizard.addEventListener("click", nextLizardPage);
+        previousLizard.addEventListener("click", previousLizardPage);
     }
 
     if (!runtime.tabShop && currentSave.lizards["Identified Lizards"] > 0) {
         unlockTab("shop");
         runtime.tabShop = true;
+        sellLizardButton.addEventListener("click", sellLizard);
+        nextShopLizard.addEventListener("click", nextLizardPage);
+        previousShopLizard.addEventListener("click", previousLizardPage);
+        buyCatButton.addEventListener("click", buyCat);
     }
 }
 
@@ -277,7 +292,6 @@ function blockForSeconds(lengthOfBlock) {
 
 //Disables usage of the "Send cat on expedition" button, requires running from an HTTP Server
 function disableButton() {
-    console.log("disabling");
     expeditionButton.disabled = true;
 }
 
@@ -332,14 +346,8 @@ currentSave = new Object(Saves);
 runtime = Object.create(RuntimeObject);
 //event listners should *probably* be moved over to ui.js
 expeditionButton.addEventListener("click", lizardExpedition);
-lizardButton.addEventListener("click", identifyLizard);
 saveButton.addEventListener("click", save);
 loadButton.addEventListener("click", load);
-nextLizard.addEventListener("click", nextLizardPage);
-previousLizard.addEventListener("click", previousLizardPage);
-sellLizardButton.addEventListener("click", sellLizard);
-nextShopLizard.addEventListener("click", nextLizardPage);
-previousShopLizard.addEventListener("click", previousLizardPage);
-buyCatButton.addEventListener("click", buyCat);
+
 setInterval(main, 16.67);
 //setInterval(Calendar.increaseTime, 1000);
