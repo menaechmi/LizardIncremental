@@ -27,7 +27,7 @@ let Shop = {
         coupons += soldLizard.stats.strength * storeMultiplier;
         coupons += soldLizard.stats.iq * storeMultiplier;
 
-        return coupons;
+        return Number(coupons.toFixed(2));
     },
 
     getCatPrice: function(numCats, buyMultiplier) {
