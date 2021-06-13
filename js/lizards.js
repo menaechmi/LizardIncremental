@@ -17,12 +17,12 @@ class Lizard {
 
 //returns a random species from the weighted Array in Probabilities.js
     randomSpecies() {
-        return this.ranWeightedArray(Probabilities.lizardProbability);
+        this.species = Lizard.ranWeightedArray(Probabilities.lizardProbability);
     }
 
 //needs to be tested then documented
     randomBreed() {
-        return this.ranWeightedArray(Probabilities.breeds);
+        this.breed = Lizard.ranWeightedArray(Probabilities.breeds);
         }
 
 //returns a random first and last name as "First Last"
@@ -30,8 +30,8 @@ class Lizard {
         let firstName;
         let lastName;
 
-        firstName = this.getRandomInt(0, firstNames.length - 1);
-        lastName = this.getRandomInt(0, lastNames.length - 1);
+        firstName = Lizard.getRandomInt(0, firstNames.length - 1);
+        lastName = Lizard.getRandomInt(0, lastNames.length - 1);
         firstName = firstNames[firstName];
         lastName = lastNames[lastName];
         return firstName + " " + lastName;
@@ -39,7 +39,7 @@ class Lizard {
 
 //returns a random trait from probabilies.js (all are weighted the same)
     randomTrait() {
-        return this.ranWeightedArray(Probabilities.traits);
+        this.trait = Lizard.ranWeightedArray(Probabilities.traits);
     }
 
 //Personality traits are from https://www.ashami.com/rpg/
@@ -55,13 +55,13 @@ class Lizard {
         let conventionalHeterodox
         let personalityObject = {};
 
-        optimistPessimist = this.getRandomInt(0, 100);
-        conscientiousUnscrupulous = this.getRandomInt(0, 100);
-        controlledSpontaneous = this.getRandomInt(0, 100);
-        intrepidCautious = this.getRandomInt(0, 100);
-        agreeableDisagreeable = this.getRandomInt(0, 100);
-        engagingReserved = this.getRandomInt(0, 100);
-        conventionalHeterodox = this.getRandomInt(0, 100);
+        optimistPessimist = Lizard.getRandomInt(0, 100);
+        conscientiousUnscrupulous = Lizard.getRandomInt(0, 100);
+        controlledSpontaneous = Lizard.getRandomInt(0, 100);
+        intrepidCautious = Lizard.getRandomInt(0, 100);
+        agreeableDisagreeable = Lizard.getRandomInt(0, 100);
+        engagingReserved = Lizard.getRandomInt(0, 100);
+        conventionalHeterodox = Lizard.getRandomInt(0, 100);
 
         if (optimistPessimist >= 50) {
             personalityObject["Optimist"] =
@@ -110,10 +110,10 @@ class Lizard {
             personalityObject["Heterodox"] =
             Math.abs(conventionalHeterodox - 50);
         }
-        return personalityObject;
+        this.personality = personalityObject;
     }
 //returns a random statblock based on species and trait
-    randomStats(species) {
+    randomStats() {
         let stats;
         let speedMinMax;
         let strengthMinMax;
@@ -217,19 +217,19 @@ class Lizard {
                 stats.speed += 4;
                 break;
             }
-            speedMinMax = Probabilities.getSpeed(species);
-            strengthMinMax = Probabilities.getStrength(species);
-            iqMinMax = Probabilities.getIq(species);
-            stats.speed += this.getRandomInt(speedMinMax[0], speedMinMax[1]);
-            stats.strength += this.getRandomInt(strengthMinMax[0], strengthMinMax[1]);
-            stats.iq += this.getRandomInt(iqMinMax[0], iqMinMax[1]);
-            return stats;
+            speedMinMax = Probabilities.getSpeed(this.species);
+            strengthMinMax = Probabilities.getStrength(this.species);
+            iqMinMax = Probabilities.getIq(this.species);
+            stats.speed += Lizard.getRandomInt(speedMinMax[0], speedMinMax[1]);
+            stats.strength += Lizard.getRandomInt(strengthMinMax[0], strengthMinMax[1]);
+            stats.iq += Lizard.getRandomInt(iqMinMax[0], iqMinMax[1]);
+            this.stats = stats;
         }
 
 
 //returns a random sex for the lizard
     randomSex() {
-        return this.ranWeightedArray(Probabilities.sex);
+        this.sex = Lizard.ranWeightedArray(Probabilities.sex);
     }
 
 //returns an rgb value for the color of the lizard.
@@ -238,14 +238,14 @@ class Lizard {
         let green;
         let blue;
 
-        red = this.getRandomInt(0, 255);
-        green = this.getRandomInt(0, 255);
-        blue = this.getRandomInt(0, 255);
-        return red + ", " + green + ", " + blue;
+        red = Lizard.getRandomInt(0, 255);
+        green = Lizard.getRandomInt(0, 255);
+        blue = Lizard.getRandomInt(0, 255);
+        this.color =  red + ", " + green + ", " + blue;
     }
 
 //Mulberry32bit randomizer from https://github.com/bryc/code/blob/master/jshash/PRNGs.md
-    mulberry32(seed) {
+    static mulberry32(seed) {
             let t;
 
             seed = seed + 0x6D2B79F5 | 0;
@@ -257,7 +257,7 @@ class Lizard {
 //the core of this function is from developer.mozilla.org's Math.random() page,
 //and gernerates a seed using Math.random(), which isn't super random,
 //but this is then used as the seed for the mulberry32 randomizer
-     getRandomInt(min, max) {
+     static getRandomInt(min, max) {
         let seed;
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -268,7 +268,7 @@ class Lizard {
 //Gets a random number between 1 and the length of the array of arrays using the getRandomInt function
 //Then crawls through the array of arrays (like those stored in Probabilities.js)
 //adding the values of the weight to the total. Once total > ranNumber, you've found your answer
-    ranWeightedArray(arrayOfArrays) {
+    static ranWeightedArray(arrayOfArrays) {
         let total;
         let ranNum;
         let i;
@@ -278,7 +278,7 @@ class Lizard {
             total += arrayOfArrays[i][1];
         }
 
-        ranNum = this.getRandomInt(1, total);
+        ranNum = Lizard.getRandomInt(1, total);
         total = 0;
 // TODO: make sure this is actually working
         for (i = 0; i < arrayOfArrays.length; i++) {
