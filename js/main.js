@@ -23,6 +23,8 @@ let lizardDisplayDiv = document.getElementById("currentLizard");
 let sellLizardButton = document.getElementById("sellLizard");
 let shopLizardDisplayDiv = document.getElementById("currentShopLizard");
 let buyCatButton = document.getElementById("buyCat");
+let advancedStatsButton = document.getElementById("buyStats");
+let statsPrice = document.getElementById("statsPrice");
 let currentPage;
 
 currentPage = 0;
@@ -84,7 +86,8 @@ let Saves = {
 let RuntimeObject = {
     tabLizards: false,
     tabShop: false,
-    tabZoo: false
+    tabZoo: false,
+    tabStats: false
     };
 
 //Function that runs when "Identify Lizard" is clicked.
@@ -104,6 +107,7 @@ function identifyLizard() {
     currentSave.lizards["Identified Lizards"] += 1;
     currentSave.lizards[nextLizard.species] += 1;
     currentPage = currentSave.lizards["Identified Lizards"] - 1;
+    currentSave.allTimeStats["Total Identifed Lizards"] += 1;
     loadLizardPage();
     }
 }
@@ -174,7 +178,7 @@ function loadLizardPage() {
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
 function checkForUnlock() {
     //If lizards is unlocked, and you have more than 1, unlock lizards tab.
-    if (!runtime.tabLizards && currentSave.lizards["Unidentified Lizards"] > 0) {
+    if (!runtime.tabLizards && (currentSave.lizards["Unidentified Lizards"] > 0 || currentSave.lizards["Identified Lizards"] > 0)) {
         unlockTab("lizards");
         runtime.tabLizards = true;
         lizardButton.addEventListener("click", identifyLizard);
@@ -189,6 +193,14 @@ function checkForUnlock() {
         nextShopLizard.addEventListener("click", nextLizardPage);
         previousShopLizard.addEventListener("click", previousLizardPage);
         buyCatButton.addEventListener("click", buyCat);
+        advancedStatsButton.addEventListener("click", buyAdvancedStats);
+        statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier);
+    }
+
+    if (!runtime.tabStats && currentSave.boughtItems.advancedStats) {
+        unlockTab("Stats");
+        runtime.tabStats = true;
+        advancedStatsButton.removeEventListener("click", buyAdvancedStats);
     }
 }
 
@@ -220,6 +232,7 @@ function sellLizard() {
     currentSave.lizards["Identified Lizards"] -= 1;
     currentSave.lizards[soldLizard.species] -= 1;
     currentSave.lizardArray.splice(currentPage, 1);
+    currentSave.allTimeStats["Total Sold Lizards"] += 1;
     nextLizardPage();
 }
 
@@ -235,6 +248,17 @@ function buyCat() {
     }
 }
 
+function buyAdvancedStats() {
+    let advancedStatsPrice = Shop.getStatsPrice(currentSave.buyMultiplier);
+    if (currentSave.coupons < advancedStatsPrice) {
+        return;
+    }
+    currentSave.coupons -= advancedStatsPrice;
+    currentSave.boughtItems.advancedStats = true;
+    statsPrice.innerHTML = "";
+    advancedStatsButton.innerHTML = "";
+}
+
 //sends cats on an expedition
 function lizardExpedition() {
     let counter;
@@ -242,25 +266,32 @@ function lizardExpedition() {
     let currentLizard;
     lizardProduct = 0;
 
-    blockForSeconds(5);
-    lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats;
+    //blockForSeconds(5);
+    lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats * currentSave.expeditionMultipler;
+    if (Lizard.getRandomInt(0, 1000) >= (10 - currentSave.boughtItems.luck)) {
+        lizardProduct = 0;
+        alert("Your cats failed to find any lizards");
+    } else if (Lizard.getRandomInt(0, 500) >= (10 -currentSave.boughtItems.luck)) {
+        lizardProduct - (Lizard.getRandomInt(1, currentSave.cats));
+        alert("One or more cats failed to find any lizards");
+    }
+
     currentSave.lizards["Unidentified Lizards"] += lizardProduct;
     for (counter = 0; counter < lizardProduct; counter++) {
         currentLizard = new Lizard();
         currentLizard.name = currentLizard.randomName();
-        currentLizard.species = currentLizard.randomSpecies();
-        currentLizard.breed = currentLizard.randomBreed();
-        currentLizard.sex = currentLizard.randomSex();
+        currentLizard.randomSpecies();
+        currentLizard.randomBreed();
+        currentLizard.randomSex();
         currentLizard.parents[1] = currentLizard.randomName();
         currentLizard.parents[0] = currentLizard.randomName();
-        currentLizard.trait = currentLizard.randomTrait();
-        currentLizard.personality = currentLizard.randomPersonality();
-        currentLizard.stats = currentLizard.randomStats(currentLizard.species);
-        currentLizard.color = currentLizard.randomColor();
+        currentLizard.randomTrait();
+        currentLizard.randomPersonality();
+        currentLizard.randomStats();
+        currentLizard.randomColor();
         currentLizard.identified = false;
         currentSave.lizardArray.push(currentLizard);
     }
-    //enableButton();
 }
 
 //updates the counters on the page
