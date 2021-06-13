@@ -32,7 +32,12 @@ let Shop = {
 
     getCatPrice: function(numCats, buyMultiplier) {
         return (5 * (numCats + 5)) / buyMultiplier;
-    }
+    },
+
+    buyAdvancedStats: function(boughtItems) {
+        boughtItems.advancedStats = true;
+        return boughtItems;
+    },
 }
 
 export default Shop;
