@@ -68,7 +68,8 @@ let Saves = {
     chances: {},
     boughtItems: {
         advancedIdentify: false,
-        advancedStats: false
+        advancedStats: false,
+        luck: 0
     },
     coupons: 0,
     sssnekel: 0,
@@ -268,11 +269,12 @@ function lizardExpedition() {
 
     //blockForSeconds(5);
     lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats * currentSave.expeditionMultipler;
-    if (Lizard.getRandomInt(0, 1000) >= (10 - currentSave.boughtItems.luck)) {
+    if (Lizard.getRandomInt(0, 1000) <= (10 - currentSave.boughtItems.luck)) {
         lizardProduct = 0;
+        console.log("unlucky!");
         alert("Your cats failed to find any lizards");
-    } else if (Lizard.getRandomInt(0, 500) >= (10 -currentSave.boughtItems.luck)) {
-        lizardProduct - (Lizard.getRandomInt(1, currentSave.cats));
+    } else if (Lizard.getRandomInt(0, 500) <= (10 -  currentSave.boughtItems.luck)) {
+        lizardProduct -= (Lizard.getRandomInt(1, currentSave.cats));
         alert("One or more cats failed to find any lizards");
     }
 
