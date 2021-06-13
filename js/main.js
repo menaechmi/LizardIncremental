@@ -68,7 +68,8 @@ let Saves = {
     coupons: 0,
     sssnekel: 0,
     sellMultiplier: 0.15,
-    buyMultiplier: 1.5
+    buyMultiplier: 1.5,
+    expeditionMultipler: 1
     };
 
 //Object to store data that the game needs, but will cause problems upon save/load
@@ -169,6 +170,7 @@ function checkForUnlock() {
         unlockTab("lizards");
         runtime.tabLizards = true;
     }
+
     if (!runtime.tabShop && currentSave.lizards["Identified Lizards"] > 0) {
         unlockTab("shop");
         runtime.tabShop = true;
@@ -207,15 +209,17 @@ function sellLizard() {
 }
 
 function buyCat() {
-    let catPriceDiv = document.getElementById("catPrice");
     let catPrice;
 
-    catPrice = Shop.getCatPrice(cats, currentSave.buyMultiplier).toFixed(2);
-    console.log(catPrice);
-    currentSave.lizards.cats += 1;
-    catPriceDiv = catPrice;
-
+    catPrice = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier);
+    if (currentSave.coupons > catPrice) {
+    currentSave.cats += 1;
+    currentSave.coupons -= catPrice;
+    } else {
+    return;
+    }
 }
+
 //sends cats on an expedition
 function lizardExpedition() {
     let counter;
@@ -248,6 +252,7 @@ function lizardExpedition() {
 //updates the counters on the page
 function updateCounter() {
     let i;
+    let catPriceDiv = document.getElementById("catPrice");
 
     document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"];
@@ -256,7 +261,8 @@ function updateCounter() {
         document.getElementById("storeCoupons").innerHTML = "Store Coupons: "
         + currentSave.coupons.toFixed(2);
     }
-    }
+    catPriceDiv.innerHTML = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier).toFixed(2);
+}
 
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
@@ -294,7 +300,6 @@ function save() {
 function load() {
     Object.assign(currentSave, JSON.parse(localStorage.getItem("lizardIncrementalSave")));
     console.log("Loading Saved Game");
-    getCatPrice(currentSave.cats, currentSave.shopMultiplier);
 }
 
 function main() {
