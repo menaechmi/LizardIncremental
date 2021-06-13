@@ -25,6 +25,9 @@ let shopLizardDisplayDiv = document.getElementById("currentShopLizard");
 let buyCatButton = document.getElementById("buyCat");
 let advancedStatsButton = document.getElementById("buyStats");
 let statsPrice = document.getElementById("statsPrice");
+let statsDiv = document.getElementById("stats");
+let localBookPrice = document.getElementById("localBookPrice");
+let localBookButton = document.getElementById("buyLocalBook");
 let currentPage;
 
 currentPage = 0;
@@ -69,6 +72,7 @@ let Saves = {
     boughtItems: {
         advancedIdentify: false,
         advancedStats: false,
+        localLizardBook: false,
         luck: 0
     },
     coupons: 0,
@@ -78,8 +82,10 @@ let Saves = {
     expeditionMultipler: 1,
     allTimeStats: {
         "Total Lizards Caught": 0,
-        "Total Identifed Lizards": 0,
-        "Total Sold Lizards": 0
+        "Total Identified Lizards": 0,
+        "Total Sold Lizards": 0,
+        "Unlucky": 0,
+        "Lost Cats": 0
     }
 };
 
@@ -108,7 +114,7 @@ function identifyLizard() {
     currentSave.lizards["Identified Lizards"] += 1;
     currentSave.lizards[nextLizard.species] += 1;
     currentPage = currentSave.lizards["Identified Lizards"] - 1;
-    currentSave.allTimeStats["Total Identifed Lizards"] += 1;
+    currentSave.allTimeStats["Total Identified Lizards"] += 1;
     loadLizardPage();
     }
 }
@@ -179,7 +185,7 @@ function loadLizardPage() {
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
 function checkForUnlock() {
     //If lizards is unlocked, and you have more than 1, unlock lizards tab.
-    if (!runtime.tabLizards && (currentSave.lizards["Unidentified Lizards"] > 0 || currentSave.lizards["Identified Lizards"] > 0)) {
+    if (!runtime.tabLizards && (currentSave.allTimeStats["Total Lizards Caught"] > 0)) {
         unlockTab("lizards");
         runtime.tabLizards = true;
         lizardButton.addEventListener("click", identifyLizard);
@@ -187,7 +193,7 @@ function checkForUnlock() {
         previousLizard.addEventListener("click", previousLizardPage);
     }
 
-    if (!runtime.tabShop && currentSave.lizards["Identified Lizards"] > 0) {
+    if (!runtime.tabShop && (currentSave.allTimeStats["Total Identified Lizards"] > 0)) {
         unlockTab("shop");
         runtime.tabShop = true;
         sellLizardButton.addEventListener("click", sellLizard);
@@ -196,12 +202,16 @@ function checkForUnlock() {
         buyCatButton.addEventListener("click", buyCat);
         advancedStatsButton.addEventListener("click", buyAdvancedStats);
         statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier);
+        localBookButton.addEventListener("click", buyLocalBook);
+        localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier);
     }
 
     if (!runtime.tabStats && currentSave.boughtItems.advancedStats) {
         unlockTab("Stats");
         runtime.tabStats = true;
         advancedStatsButton.removeEventListener("click", buyAdvancedStats);
+        statsPrice.innerHTML = "";
+        advancedStatsButton.innerHTML = "";
     }
 }
 
@@ -256,28 +266,48 @@ function buyAdvancedStats() {
     }
     currentSave.coupons -= advancedStatsPrice;
     currentSave.boughtItems.advancedStats = true;
-    statsPrice.innerHTML = "";
-    advancedStatsButton.innerHTML = "";
 }
 
+function buyLocalBook() {
+    let bookPrice = Shop.getLocalBookPrice(currentSave.buyMultiplier);
+    if (currentSave.coupons < bookPrice) {
+        return;
+    }
+    currentSave.coupons -= bookPrice;
+    currentSave.boughtItems.localLizardBook = true;
+    localBookPrice.innerHTML = "";
+    localBookButton.innerHTML = "";
+}
 //sends cats on an expedition
 function lizardExpedition() {
     let counter;
     let lizardProduct;
     let currentLizard;
+    let chance;
     lizardProduct = 0;
 
     //blockForSeconds(5);
     lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats * currentSave.expeditionMultipler;
-    if (Lizard.getRandomInt(0, 1000) <= (10 - currentSave.boughtItems.luck)) {
+    chance = Lizard.getRandomInt(0, 1000);
+    if (chance <= (11 / (currentSave.boughtItems.luck + 1))) {
         lizardProduct = 0;
         console.log("unlucky!");
         alert("Your cats failed to find any lizards");
-    } else if (Lizard.getRandomInt(0, 500) <= (10 -  currentSave.boughtItems.luck)) {
+        currentSave.allTimeStats["Unlucky"] += 1;
+    } else if (chance <= (100 - currentSave.boughtItems.luck)) {
         lizardProduct -= (Lizard.getRandomInt(1, currentSave.cats));
         alert("One or more cats failed to find any lizards");
+        currentSave.allTimeStats["Unlucky"] += 1;
     }
 
+    if (chance >= (550 + currentSave.boughtItems.luck) && chance <= (555 + currentSave.cats) && currentSave.cats > 1) {
+        currentSave.cats -= 1;
+        alert("A cat didn't come back from the expedition");
+        currentSave.allTimeStats["Unlucky"] += 1;
+        currentSave.allTimeStats["Lost Cats"] += 1;
+    }
+
+    currentSave.allTimeStats["Total Lizards Caught"] += lizardProduct;
     currentSave.lizards["Unidentified Lizards"] += lizardProduct;
     for (counter = 0; counter < lizardProduct; counter++) {
         currentLizard = new Lizard();
@@ -298,10 +328,10 @@ function lizardExpedition() {
 
 //updates the counters on the page
 function updateCounter() {
-    let i;
+    // TODO: turn this into an HTML table
     let catPriceDiv = document.getElementById("catPrice");
-
-    document.getElementById("lizards").innerHTML = "Unidentifed Lizards: "
+    let lizardDiv = document.getElementById("lizards");
+    lizardDiv.innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"] + "<br />Identified Lizards: "
         + currentSave.lizards["Identified Lizards"];
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
@@ -309,9 +339,33 @@ function updateCounter() {
         document.getElementById("storeCoupons").innerHTML = "Store Coupons: "
         + currentSave.coupons.toFixed(2);
     }
+    if (currentSave.boughtItems.localLizardBook) {
+        lizardDiv.innerHTML += "<br />Skinks: " + currentSave.lizards["Skinks"];
+        lizardDiv.innerHTML += "<br />Anoles: " + currentSave.lizards["Anole"];
+        lizardDiv.innerHTML += "<br />Grass Lizards: " + currentSave.lizards["Grass Lizards"];
+        lizardDiv.innerHTML += "<br />Brown Basilisks: " + currentSave.lizards["Brown Basilisk"];
+        lizardDiv.innerHTML += "<br />Rainbow Rock Lizards: " + currentSave.lizards["Rainbow Rock Lizard"];
+        lizardDiv.innerHTML += "<br />Iguanas: " + currentSave.lizards["Iguana"];
+        lizardDiv.innerHTML += "<br />Bearded Dragons: " + currentSave.lizards["Bearded Dragon"];
+        lizardDiv.innerHTML += "<br />Uromastyx: " + currentSave.lizards["Uromastyx"];
+        lizardDiv.innerHTML += "<br />Chameleons: " + currentSave.lizards["Chameleon"];
+        lizardDiv.innerHTML += "<br />Giant Plated Lizards: " + currentSave.lizards["Giant Plated Lizard"];
+        lizardDiv.innerHTML += "<br />Legless Lizards: " + currentSave.lizards["Legless Lizard"];
+        lizardDiv.innerHTML += "<br />Keeled Lizards: " + currentSave.lizards["Keeled Lizard"];
+        lizardDiv.innerHTML += "<br />Frilled Dragons: " + currentSave.lizards["Frilled Dragons"];
+        lizardDiv.innerHTML += "<br />Geckos: " + currentSave.lizards["Gecko"];
+    }
+
     catPriceDiv.innerHTML = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier).toFixed(2);
 }
 
+function updateStats() {
+    statsDiv.innerHTML = "<p>Total Lizards Caught: " + currentSave.allTimeStats["Total Lizards Caught"];
+    statsDiv.innerHTML += "Total Identified Lizards: " + currentSave.allTimeStats["Total Identified Lizards"];
+    statsDiv.innerHTML += "<br />Total Sold Lizards: " + currentSave.allTimeStats["Total Sold Lizards"];
+    statsDiv.innerHTML += "<br />Times you were unlucky: " + currentSave.allTimeStats["Unlucky"];
+    statsDiv.innerHTML += "<br />Cats that were lost: " + currentSave.allTimeStats["Lost Cats"] + "</p>";
+}
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
 //by running disableButton(), waiting the amount of time, then running enableButton()
@@ -373,6 +427,7 @@ function main() {
 
     updateCounter();
     checkForUnlock();
+    updateStats();
 //    frameID = requestAnimationFrame(main);
 }
 currentSave = new Object(Saves);
