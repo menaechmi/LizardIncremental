@@ -114,8 +114,10 @@ function identifyLizard() {
     for (i = 0; i < count; i++) {
         nextLizard = findUnidentifiedLizard();
         //if there are no lizards, it skips the identification
+        //break statement prevents spamming of multiple fixes issue #2
         if (nextLizard === "No lizards to identify") {
             alert(nextLizard);
+            break;
         } else {
             nextLizard.identified = true;
             //console.log(nextLizard);
