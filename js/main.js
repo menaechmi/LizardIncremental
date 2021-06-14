@@ -232,12 +232,12 @@ function checkForUnlock() {
         previousShopLizard.addEventListener("click", previousLizardPage);
         buyCatButton.addEventListener("click", buyCat);
         advancedStatsButton.addEventListener("click", buyAdvancedStats);
-        statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier);
+        statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier).toFixed(2);
         identificationStationButton.addEventListener("click", buyIdentificationStation);
         //if you bought the local lizard book previously, don't display anything
         if (!currentSave.boughtItems.localLizardBook) {
             localBookButton.addEventListener("click", buyLocalBook);
-            localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier);
+            localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier).toFixed(2);
         } else {
             localBookButton.innerHTML = "";
             localBookPrice.innerHTML = "";
