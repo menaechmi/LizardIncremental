@@ -108,15 +108,19 @@ function identifyLizard() {
     let count;
     let i;
 
+    //loops the amount of identificationStations that you have
+    //each loops finds the next unidentified lizard (if there is one)
     count = currentSave.boughtItems.identificationStation;
     for (i = 0; i < count; i++) {
         nextLizard = findUnidentifiedLizard();
+        //if there are no lizards, it skips the identification
         if (nextLizard === "No lizards to identify") {
             alert(nextLizard);
         } else {
             nextLizard.identified = true;
             //console.log(nextLizard);
 
+            //increments several counters
             currentSave.lizards["Unidentified Lizards"] -= 1;
             currentSave.lizards["Identified Lizards"] += 1;
             currentSave.lizards[nextLizard.species] += 1;
@@ -132,6 +136,8 @@ function identifyLizard() {
 function findUnidentifiedLizard() {
     let i;
 
+    //loops through the lizardArray. If the current Lizard is unidentified,
+    //load the lizard page and return the current member of the lizard Array
     for (i = 0; i < currentSave.lizardArray.length; i++) {
         if (!currentSave.lizardArray[i].identified) {
             loadLizardPage();
@@ -163,6 +169,7 @@ function previousLizardPage() {
 function loadLizardPage() {
     let displayLizard;
 
+    //if there's no identified lizards, empty the lizard displays and return
     displayLizard = currentSave.lizardArray[currentPage];
     if (currentSave.lizards["Identified Lizards"] == 0) {
         lizardDisplayDiv.innerHTML = "";
@@ -176,24 +183,33 @@ function loadLizardPage() {
     }
 
     //<p style="color: rgb(176, 216, 244)">displayLizard.name</p>
+    //uses style.color to change the display color to the lizard Color then
+    //displays the Name Species Color and Sex
     lizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
     lizardDisplayDiv.innerHTML = "<p>Name: \t" + displayLizard.name;
     lizardDisplayDiv.innerHTML += "Species: \t" + displayLizard.species;
     lizardDisplayDiv.innerHTML += "<br />Color: \t" + displayLizard.color;
     lizardDisplayDiv.innerHTML += "<br/ >Sex: \t" + displayLizard.sex + "</p>";
+
+    //if advanced identify has been bought, shows breed, birthday, trait and
+    //stats if advanced identified has been bought.
+    // TODO: implement advanced identify
     if (currentSave.advancedIdentify) {
         lizardDisplayDiv.innerHTML += "<p>Breed: \t" + displayLizard.breed;
         lizardDisplayDiv.innerHTML += "<br />Birthday: \t" + displayLizard.birthday;
         lizardDisplayDiv.innerHTML += "<br />Trait: \t" + displayLizard.trait;
         lizardDisplayDiv.innerHTML += "<br />Stats: \t" + displayLizard.stats; //TODO: determine how to actually show stats
     }
+
+    //displays the lizard name in the store
     shopLizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
     shopLizardDisplayDiv.innerHTML = "<p>Name: " + displayLizard.name + "</p>";
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
 function checkForUnlock() {
-    //If lizards is unlocked, and you have more than 1, unlock lizards tab.
+    //if you have more than one lizard, unlocks the lizard tab for ya
+    //also adds the relavant event listeners in hope to save some memory before they're needed
     if (!runtime.tabLizards && (currentSave.allTimeStats["Total Lizards Caught"] > 0)) {
         unlockTab("lizards");
         runtime.tabLizards = true;
@@ -202,6 +218,9 @@ function checkForUnlock() {
         previousLizard.addEventListener("click", previousLizardPage);
     }
 
+    //unlocks the shop when you have at least 1 identified lizard
+    //also adds event listeners for shop Buttons, and sets the price for the
+    //advanced stats and local lizard book because they're a static price (I think)
     if (!runtime.tabShop && (currentSave.allTimeStats["Total Identified Lizards"] > 0)) {
         unlockTab("shop");
         runtime.tabShop = true;
@@ -211,15 +230,19 @@ function checkForUnlock() {
         buyCatButton.addEventListener("click", buyCat);
         advancedStatsButton.addEventListener("click", buyAdvancedStats);
         statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier);
-        localBookButton.addEventListener("click", buyLocalBook);
-        localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier);
         identificationStationButton.addEventListener("click", buyIdentificationStation);
-        if (currentSave.boughtItems.localLizardBook) {
+        //if you bought the local lizard book previously, don't display anything
+        if (!currentSave.boughtItems.localLizardBook) {
+            localBookButton.addEventListener("click", buyLocalBook);
+            localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier);
+        } else {
             localBookButton.innerHTML = "";
             localBookPrice.innerHTML = "";
         }
     }
 
+    //if you bought advancedStats, unlock the stats tab, and removes the event
+    //listener for the advanced stats tab, as well as clearing the stats stuff
     if (!runtime.tabStats && currentSave.boughtItems.advancedStats) {
         unlockTab("Stats");
         runtime.tabStats = true;
@@ -242,6 +265,9 @@ function unlockTab(tab) {
 function sellLizard() {
     let soldLizard;
 
+    //when lizardArray[currentPage] is undefined, which happens when you splice
+    //the array with no other elemnents in it, pops and alert then loads loadLizardPage
+    //which should clear the display
     soldLizard = currentSave.lizardArray[currentPage];
     if (soldLizard === undefined){
         alert("You have no lizards!");
@@ -249,10 +275,17 @@ function sellLizard() {
         return;
     }
 
+    //If you have unidentified lizards and try to sell one, alert user that
+    //you must identfiy lizards before you can sell them
     if (!soldLizard.identified) {
         alert("Please identify lizards before selling them");
         return;
     }
+
+    //actually get around to selling the lizard. use Shop to determine how much
+    //the lizard will sell for, decrement identified lizards and the speices
+    //that you sold one from. splice the array to remove the selected element
+    //increment the alltimestats for sold lizards
     currentSave.coupons += Shop.sellLizard(soldLizard, currentSave.sellMultiplier);
     currentSave.lizards["Identified Lizards"] -= 1;
     currentSave.lizards[soldLizard.species] -= 1;
@@ -265,6 +298,8 @@ function sellLizard() {
 function buyCat() {
     let catPrice;
 
+    //figure out the price of the cats, then if you have enough coupons,
+    //buy the cat. return if you cannot afford the cat
     catPrice = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier);
     if (currentSave.coupons > catPrice) {
         currentSave.cats += 1;
@@ -276,6 +311,9 @@ function buyCat() {
 
 //buys the advanced stats to unlock stats tab
 function buyAdvancedStats() {
+    //get the price of the advanced stats
+    //if you don't have the coupons to buy the advanced price, return, otherwise
+    //buy the advanced stats
     let advancedStatsPrice = Shop.getStatsPrice(currentSave.buyMultiplier);
     if (currentSave.coupons < advancedStatsPrice) {
         return;
@@ -287,9 +325,13 @@ function buyAdvancedStats() {
 //buys the book that unlocks the list of the exact measure of lizards you have
 function buyLocalBook() {
     let bookPrice = Shop.getLocalBookPrice(currentSave.buyMultiplier);
+
+    //if you can't afford the book, return
     if (currentSave.coupons <= bookPrice) {
         return;
     }
+
+    //actually buy the book
     currentSave.coupons -= bookPrice;
     currentSave.boughtItems.localLizardBook = true;
     localBookPrice.innerHTML = "";
@@ -300,10 +342,13 @@ function buyLocalBook() {
 function buyIdentificationStation() {
     let stationPrice;
 
+    //check the price of the station, then if you can't afford it return
     stationPrice = Shop.getIdentificationStationPrice(currentSave.boughtItems.identificationStation, currentSave.buyMultiplier);
     if (currentSave.coupons <= stationPrice) {
         return;
     }
+
+    //actually do the buying
     currentSave.coupons -= stationPrice;
     currentSave.boughtItems.identificationStation += 1;
 }
@@ -316,20 +361,32 @@ function lizardExpedition() {
     let chance;
     lizardProduct = 0;
 
+    //commented out for testing, because it can be annoying
     //blockForSeconds(5);
+
+    //lizard Product = 1 * multipliers
     lizardProduct += 1 * currentSave.lizardMultiplier * currentSave.cats * currentSave.expeditionMultipler;
+
+    //pull a random number between 0 and 1000, check this number against
+    //some math to determine if you get an unlucky event. Either cats not
+    //getting any lizards (about an 11 in 1000 chance at first, reduced by luck items)
+    //or some cats dont find lizards (about a 1/10 chance). both increment the unlucky stat
     chance = Lizard.getRandomInt(0, 1000);
     if (chance <= (11 / (currentSave.boughtItems.luck + 1))) {
         lizardProduct = 0;
-        console.log("unlucky!");
+        console.log("super unlucky!");
         alert("Your cats failed to find any lizards");
         currentSave.allTimeStats["Unlucky"] += 1;
     } else if (chance <= (100 - currentSave.boughtItems.luck)) {
+        console.log("no luck here");
         lizardProduct -= (Lizard.getRandomInt(1, currentSave.cats));
         alert("One or more cats failed to find any lizards");
         currentSave.allTimeStats["Unlucky"] += 1;
     }
 
+    //chance to lose a kitty :c only happens if you have more than 1, because we
+    //dont want a soft lock. the chance is like 1/500, but reduces drastically
+    //with luck items. increments lost cats and unlucky stats
     if (chance >= (550 + currentSave.boughtItems.luck) && chance <= (555 + currentSave.cats) && currentSave.cats > 1) {
         currentSave.cats -= 1;
         alert("A cat didn't come back from the expedition");
@@ -337,6 +394,9 @@ function lizardExpedition() {
         currentSave.allTimeStats["Lost Cats"] += 1;
     }
 
+    //actually do the lizard catching. increment lizard catches, and unidentifed
+    //lizards. Then creates a new object for the generated lizard, constructs it
+    //using the methods of the class, and pushes it to the lizard array
     currentSave.allTimeStats["Total Lizards Caught"] += lizardProduct;
     currentSave.lizards["Unidentified Lizards"] += lizardProduct;
     for (counter = 0; counter < lizardProduct; counter++) {
@@ -361,15 +421,21 @@ function updateCounter() {
     // TODO: turn this into an HTML table
     let catPriceDiv = document.getElementById("catPrice");
     let lizardDiv = document.getElementById("lizards");
+
+    //displays unidentified and identified lizards
     lizardDiv.innerHTML = "Unidentifed Lizards: "
         + currentSave.lizards["Unidentified Lizards"] + "<br />Identified Lizards: "
         + currentSave.lizards["Identified Lizards"];
+    //displays cat number
     document.getElementById("cats").innerHTML = "Cats: " + currentSave.cats;
+
+    //if you have more than 0 coupons, display the number of coupons
     if (currentSave.coupons > 0) {
         document.getElementById("storeCoupons").innerHTML = "Store Coupons: "
         + currentSave.coupons.toFixed(2);
     }
 
+    //if you've bought the lizard book, display all the kinds of lizards and their count
     if (currentSave.boughtItems.localLizardBook) {
         lizardDiv.innerHTML += "<br />Skinks: " + currentSave.lizards["Skinks"];
         lizardDiv.innerHTML += "<br />Anoles: " + currentSave.lizards["Anole"];
@@ -387,14 +453,17 @@ function updateCounter() {
         lizardDiv.innerHTML += "<br />Geckos: " + currentSave.lizards["Gecko"];
     }
 
+    //if you have more than one identification station show it on the lizards page
     if (currentSave.boughtItems.identificationStation > 1) {
         identificationStationDiv.innerHTML = "Identification Stations: " + currentSave.boughtItems.identificationStation;
     }
 
+    //list price of shop and identification station prices
     catPriceDiv.innerHTML = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier).toFixed(2);
     identificationStationPrice.innerHTML = Shop.getIdentificationStationPrice(currentSave.boughtItems.identificationStation, currentSave.buyMultiplier).toFixed(2);
 }
 
+//updates the stats so that you can view them anytime you please
 function updateStats() {
     statsDiv.innerHTML = "<p>Total Lizards Caught: " + currentSave.allTimeStats["Total Lizards Caught"];
     statsDiv.innerHTML += "Total Identified Lizards: " + currentSave.allTimeStats["Total Identified Lizards"];
@@ -405,6 +474,7 @@ function updateStats() {
 
 //Blocks the use of the "send cat on expedition" button for lengthOfBlock blockForSeconds
 //by running disableButton(), waiting the amount of time, then running enableButton()
+//magic number is to convert from seconds to miliseconds
 function blockForSeconds(lengthOfBlock) {
     let setForSeconds;
 
