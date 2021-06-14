@@ -275,7 +275,8 @@ export let firstNames = [
     "Prometheus",
     "Achilles",
     "Piotr",
-    "Peter"
+    "Peter",
+    "Natalya"
 ]
 
 //Array to contain all possible last names for use in game
@@ -372,7 +373,7 @@ export let lastNames = [
     "Mcilwaine",
     "Clark",
     "Bee",
-    "Beeeater",
+    "Bee-eater",
     "Carlos",
     "Better Known as  \"That Bitch\"",
     "Sze",
@@ -515,11 +516,7 @@ export let lastNames = [
     "the Socialist",
     "the Capitalist",
     "Domalewski",
-    "Alabrudzińska",
-    "Zigmund",
-    "Alex",
-    "Natalia",
-    "Natalya"
+    "Alabrudzińska"
 ]
 
 export default {firstNames, lastNames};
