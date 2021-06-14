@@ -506,6 +506,7 @@ function save() {
 function load() {
     Object.assign(currentSave, JSON.parse(localStorage.getItem("lizardIncrementalSave")));
     console.log("Loading Saved Game");
+    loadLizardPage();
 }
 
 function main() {
