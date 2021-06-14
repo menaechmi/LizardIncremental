@@ -29,7 +29,7 @@ Download python, run <code>python -m http.server</code> in the folder of the gam
 - Automation
 - And more!
 
-##Features that are not planned
+## Features that are not planned
 - Music
 - Motorcycles
 - Lizard Hair
