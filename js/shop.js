@@ -41,6 +41,9 @@ let Shop = {
         const STATS_PRICE = 50.00;
         return STATS_PRICE * buyMultiplier;
     },
+    getIdentificationStationPrice: function(identificationStation, buyMultiplier) {
+        return Number((50 * identificationStation) * buyMultiplier);
+    }
 }
 
 export default Shop;
