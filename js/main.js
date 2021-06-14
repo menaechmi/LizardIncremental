@@ -205,7 +205,8 @@ function loadLizardPage() {
 
     //displays the lizard name in the store
     shopLizardDisplayDiv.style.color = "rgb(" + displayLizard.color + ")";
-    shopLizardDisplayDiv.innerHTML = "<p>Name: " + displayLizard.name + "</p>";
+    shopLizardDisplayDiv.innerHTML = "<p>Name: " + displayLizard.name + "<br />Species: "
+            + displayLizard.species + "</p>";
 }
 
 //Checks for unlock conditions of new tabs, then calls unlockTab(tab) to insert tab into UI
