@@ -28,6 +28,9 @@ let statsPrice = document.getElementById("statsPrice");
 let statsDiv = document.getElementById("stats");
 let localBookPrice = document.getElementById("localBookPrice");
 let localBookButton = document.getElementById("buyLocalBook");
+let identificationStationButton = document.getElementById("buyIdentificationStation");
+let identificationStationPrice = document.getElementById("identificationStationPrice");
+let identificationStationDiv = document.getElementById("identificationStationAmount");
 let currentPage;
 
 currentPage = 0;
@@ -73,7 +76,7 @@ let Saves = {
         advancedIdentify: false,
         advancedStats: false,
         localLizardBook: false,
-        identificationStations: 1,
+        identificationStation: 1,
         luck: 0
     },
     coupons: 0,
@@ -105,7 +108,7 @@ function identifyLizard() {
     let count;
     let i;
 
-    count = currentSave.boughtItems.identificationStations;
+    count = currentSave.boughtItems.identificationStation;
     for (i = 0; i < count; i++) {
         nextLizard = findUnidentifiedLizard();
         if (nextLizard === "No lizards to identify") {
@@ -210,6 +213,7 @@ function checkForUnlock() {
         statsPrice.innerHTML = Shop.getStatsPrice(currentSave.buyMultiplier);
         localBookButton.addEventListener("click", buyLocalBook);
         localBookPrice.innerHTML = Shop.getLocalBookPrice(currentSave.buyMultiplier);
+        identificationStationButton.addEventListener("click", buyIdentificationStation);
         if (currentSave.boughtItems.localLizardBook) {
             localBookButton.innerHTML = "";
             localBookPrice.innerHTML = "";
@@ -257,6 +261,7 @@ function sellLizard() {
     nextLizardPage();
 }
 
+//Buys a cat
 function buyCat() {
     let catPrice;
 
@@ -269,6 +274,7 @@ function buyCat() {
     }
 }
 
+//buys the advanced stats to unlock stats tab
 function buyAdvancedStats() {
     let advancedStatsPrice = Shop.getStatsPrice(currentSave.buyMultiplier);
     if (currentSave.coupons < advancedStatsPrice) {
@@ -278,9 +284,10 @@ function buyAdvancedStats() {
     currentSave.boughtItems.advancedStats = true;
 }
 
+//buys the book that unlocks the list of the exact measure of lizards you have
 function buyLocalBook() {
     let bookPrice = Shop.getLocalBookPrice(currentSave.buyMultiplier);
-    if (currentSave.coupons < bookPrice) {
+    if (currentSave.coupons <= bookPrice) {
         return;
     }
     currentSave.coupons -= bookPrice;
@@ -288,6 +295,19 @@ function buyLocalBook() {
     localBookPrice.innerHTML = "";
     localBookButton.innerHTML = "";
 }
+
+//buys an extra identification station
+function buyIdentificationStation() {
+    let stationPrice;
+
+    stationPrice = Shop.getIdentificationStationPrice(currentSave.boughtItems.identificationStation, currentSave.buyMultiplier);
+    if (currentSave.coupons <= stationPrice) {
+        return;
+    }
+    currentSave.coupons -= stationPrice;
+    currentSave.boughtItems.identificationStation += 1;
+}
+
 //sends cats on an expedition
 function lizardExpedition() {
     let counter;
@@ -349,6 +369,7 @@ function updateCounter() {
         document.getElementById("storeCoupons").innerHTML = "Store Coupons: "
         + currentSave.coupons.toFixed(2);
     }
+
     if (currentSave.boughtItems.localLizardBook) {
         lizardDiv.innerHTML += "<br />Skinks: " + currentSave.lizards["Skinks"];
         lizardDiv.innerHTML += "<br />Anoles: " + currentSave.lizards["Anole"];
@@ -366,7 +387,12 @@ function updateCounter() {
         lizardDiv.innerHTML += "<br />Geckos: " + currentSave.lizards["Gecko"];
     }
 
+    if (currentSave.boughtItems.identificationStation > 1) {
+        identificationStationDiv.innerHTML = "Identification Stations: " + currentSave.boughtItems.identificationStation;
+    }
+
     catPriceDiv.innerHTML = Shop.getCatPrice(currentSave.cats, currentSave.buyMultiplier).toFixed(2);
+    identificationStationPrice.innerHTML = Shop.getIdentificationStationPrice(currentSave.boughtItems.identificationStation, currentSave.buyMultiplier).toFixed(2);
 }
 
 function updateStats() {
