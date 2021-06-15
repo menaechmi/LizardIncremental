@@ -20,6 +20,7 @@ let loadButton = document.getElementById("loadButton");
 let nextLizard = document.getElementById("nextLizard");
 let previousLizard = document.getElementById("previousLizard");
 let lizardDisplayDiv = document.getElementById("currentLizard");
+let speciesSelector = document.getElementById("species");
 let sellLizardButton = document.getElementById("sellLizard");
 let shopLizardDisplayDiv = document.getElementById("currentShopLizard");
 let buyCatButton = document.getElementById("buyCat");
@@ -167,6 +168,65 @@ function previousLizardPage() {
     loadLizardPage();
 }
 
+//filters out to only display certain lizards based on species selected from the drop down
+//currently hard-coded, need to figure out way to do this more programatically
+function speciesSwitcher() {
+    let species;
+    let i;
+
+    switch (speciesSelector.value) {
+        case "skink":
+            species = "Skinks";
+            break;
+        case "anole":
+            species = "Anole";
+            break;
+        case "grassLizard":
+            species = "Grass Lizards";
+            break;
+        case "brownBasilisk":
+            species = "Brown Basilisk";
+            break;
+        case "rainbowRockLizard":
+            species = "Rainbow Rock Lizard";
+            break;
+        case "iguana":
+            species = "Iguana";
+            break;
+        case "beardedDragon":
+            species = "Bearded Dragon";
+            break;
+        case "uromastyx":
+            species = "Uromastyx";
+            break;
+        case "chameleon":
+            species = "Chameleon";
+            break;
+        case "giantPlatedLizard":
+            species = "Giant Plated Lizard";
+            break;
+        case "leglessLizard":
+            species = "Legless Lizard";
+            break;
+        case "keeledLizard":
+            species = "Keeled Lizard";
+            break;
+        case "frilledDragon":
+            species = "Frilled Dragons";
+            break;
+        case "gecko":
+            species = "Gecko";
+            break;
+        default:
+            species = "All Species";
+            break;
+        }
+
+    for (i = 0; i < currentSave.lizardArray.length; i++) {
+        console.log(currentSave.lizardArray[i].species);
+    }
+}
+
 //Loads and displays the currently selected Lizard
 function loadLizardPage() {
     let displayLizard;
@@ -219,6 +279,7 @@ function checkForUnlock() {
         lizardButton.addEventListener("click", identifyLizard);
         nextLizard.addEventListener("click", nextLizardPage);
         previousLizard.addEventListener("click", previousLizardPage);
+        speciesSelector.addEventListener("click", speciesSwitcher);
     }
 
     //unlocks the shop when you have at least 1 identified lizard
