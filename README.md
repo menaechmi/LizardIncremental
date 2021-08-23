@@ -24,8 +24,7 @@ Download python, run <code>python -m http.server</code> in the folder of the gam
 - Mad science!!!!!!!
 - Pause and resume
 - Prestige system
-- Advanced genetics (lets put Mendel to shame)
-- Steam integration (eventually)
+- Advanced genetics
 - Automation
 - And so much more that I just don't want to spoil!
 
